@@ -69,10 +69,10 @@ public class TeleOp2025_v1 extends LinearOpMode {
         leftRear = hardwareMap.get(DcMotorEx.class, "lr");
         rightRear = hardwareMap.get(DcMotorEx.class, "rr");
         rightFront = hardwareMap.get(DcMotorEx.class, "rf");
-        leftFront.setDirection(DcMotor.Direction.FORWARD);
-        leftRear.setDirection(DcMotor.Direction.REVERSE);
+        leftFront.setDirection(DcMotor.Direction.REVERSE);
+        leftRear.setDirection(DcMotor.Direction.FORWARD);
         rightRear.setDirection(DcMotor.Direction.REVERSE);
-        rightFront.setDirection(DcMotor.Direction.FORWARD);
+        rightFront.setDirection(DcMotor.Direction.REVERSE);
 
         // Adjust the orientation parameters to match your robot
         IMU.Parameters parameters = new IMU.Parameters(new RevHubOrientationOnRobot(
@@ -117,6 +117,7 @@ public class TeleOp2025_v1 extends LinearOpMode {
             } else {
                 speedFactor = 0.5;
             }
+            armSystem.armTeleOp(gamepad2);
 
             // now the orientation of robot is changed
             double leftStickXPos = gamepad1.left_stick_x * speedFactor;
@@ -148,28 +149,28 @@ public class TeleOp2025_v1 extends LinearOpMode {
             leftRear.setPower(lrPower);
             rightRear.setPower(rrPower);
 
-            if (gamepad1.dpad_up) {//outtake
+            if (gamepad2.dpad_up) {//outtake
                 ClawL.setPower(1);
                 ClawR.setPower(-1);
             }
-            if (gamepad1.dpad_down) {//intake
+            if (gamepad2.dpad_down) {//intake
                 ClawL.setPower(-1);
                 ClawR.setPower(1);
             }
-            if (gamepad1.dpad_right) {//stop
+            if (gamepad2.dpad_right) {//stop
                 ClawL.setPower(0);
                 ClawR.setPower(0);
             }
-            if (gamepad1.a) {
+            if (gamepad2.a) {
                 OuttakeWrist.setPosition(0);//outtake
             }
-            if (gamepad1.b) {//intake
+            if (gamepad2.b) {//intake
                 OuttakeWrist.setPosition(0.7);
             }
-            if (gamepad1.left_bumper) {//outtake
+            if (gamepad2.left_bumper) {//outtake
                 IntakeWrist.setPosition(0.15);
             }
-            if (gamepad1.right_bumper) {//intake
+            if (gamepad2.right_bumper) {//intake
                 IntakeWrist.setPosition(0.95);
             }
 
