@@ -10,8 +10,10 @@ import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
+import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.hardware.IMU;
 import com.qualcomm.robotcore.hardware.Servo;
+import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.hardware.TouchSensor;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
@@ -117,7 +119,7 @@ public class TeleOp2025_v1 extends LinearOpMode {
             } else {
                 speedFactor = 0.5;
             }
-            armSystem.armTeleOp(gamepad2);
+
 
             // now the orientation of robot is changed
             double leftStickXPos = gamepad1.left_stick_x * speedFactor;
@@ -148,6 +150,9 @@ public class TeleOp2025_v1 extends LinearOpMode {
             rightFront.setPower(rfPower);
             leftRear.setPower(lrPower);
             rightRear.setPower(rrPower);
+
+
+            armSystem.armTeleOp(gamepad2);
 
             if (gamepad2.dpad_up) {//outtake
                 ClawL.setPower(1);
