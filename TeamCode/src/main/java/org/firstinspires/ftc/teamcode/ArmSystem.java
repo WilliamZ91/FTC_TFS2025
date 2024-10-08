@@ -26,29 +26,39 @@ public class ArmSystem {
     private static volatile double sliderMinPwr = 0.3;
     // Slider related instance variables
     public DcMotorEx leftArmMtr = null;
-    public DcMotorEx rightArmMtr = null;
+    public DcMotorEx laterator = null;
+
+    // public DcMotorEx rightArmMtr = null;
 
     private int sliderPosLeft;
-    private int sliderPosRight;
-    private volatile double sliderRightLen;
+  //  private int sliderPosRight;
+  //  private volatile double sliderRightLen;
     private volatile double sliderLeftLen;
+    private volatile double sliderLatLen;
     public boolean armflag;
 
     public ArmSystem(LinearOpMode mainTask, boolean auto) {
         leftArmMtr = mainTask.hardwareMap.get(DcMotorEx.class, "armL");
-        rightArmMtr = mainTask.hardwareMap.get(DcMotorEx.class, "armR");
+        laterator = mainTask.hardwareMap.get(DcMotorEx.class, "laterator");
+
+        //  rightArmMtr = mainTask.hardwareMap.get(DcMotorEx.class, "armR");
         leftArmMtr.setDirection(DcMotor.Direction.FORWARD);
         leftArmMtr.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         leftArmMtr.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        rightArmMtr.setDirection(DcMotor.Direction.REVERSE);
-        rightArmMtr.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        rightArmMtr.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        laterator.setDirection(DcMotor.Direction.FORWARD);
+        laterator.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        laterator.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+//        rightArmMtr.setDirection(DcMotor.Direction.REVERSE);
+//        rightArmMtr.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+//        rightArmMtr.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 //        rightArmMtr.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 //        leftArmMtr.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         sliderLeftLen = getSlideLen("left");
-        sliderRightLen = getSlideLen("right");
-        sliderPosRight = rightArmMtr.getCurrentPosition();
-        sliderPosLeft = rightArmMtr.getCurrentPosition();
+        sliderLatLen = getSlideLen("horizontal");
+
+//        sliderRightLen = getSlideLen("right");
+//        sliderPosRight = rightArmMtr.getCurrentPosition();
+        sliderPosLeft = leftArmMtr.getCurrentPosition();
     }
     public void sliderCtrl(String motor, int position, double power) {
         switch (motor) {
@@ -60,26 +70,26 @@ public class ArmSystem {
                 leftArmMtr.setPower(power);
                 leftArmMtr.setMode(DcMotor.RunMode.RUN_TO_POSITION);
                 break;
-            case "right":
-                position = Math.min(position, SLIDER_MAX);
-                position = Math.max(position, SLIDER_MIN);
-                this.sliderPosRight = position;
-                rightArmMtr.setTargetPosition(position);
-                rightArmMtr.setPower(power);
-                rightArmMtr.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                break;
-            case "both":
-                position = Math.min(position, SLIDER_MAX);
-                position = Math.max(position, SLIDER_MIN);
-                this.sliderPosRight = position;
-                this.sliderPosLeft = position;
-                leftArmMtr.setTargetPosition(position);
-                leftArmMtr.setPower(power);
-                leftArmMtr.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                rightArmMtr.setTargetPosition(position);
-                rightArmMtr.setPower(power);
-                rightArmMtr.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                break;
+//            case "right":
+//                position = Math.min(position, SLIDER_MAX);
+//                position = Math.max(position, SLIDER_MIN);
+//                this.sliderPosRight = position;
+//                rightArmMtr.setTargetPosition(position);
+//                rightArmMtr.setPower(power);
+//                rightArmMtr.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+//                break;
+//            case "both":
+//                position = Math.min(position, SLIDER_MAX);
+//                position = Math.max(position, SLIDER_MIN);
+//                this.sliderPosRight = position;
+//                this.sliderPosLeft = position;
+//                leftArmMtr.setTargetPosition(position);
+//                leftArmMtr.setPower(power);
+//                leftArmMtr.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+//                rightArmMtr.setTargetPosition(position);
+//                rightArmMtr.setPower(power);
+//                rightArmMtr.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+//                break;
         }
     }
 
@@ -90,24 +100,24 @@ public class ArmSystem {
         sliderCtrl(motor, position, power);
     }
     public void stopRobotArm() {
-        rightArmMtr.setPower(0);
+      //  rightArmMtr.setPower(0);
         leftArmMtr.setPower(0);
     }
     private void sliderHoldPos(String motor, double power) {
         leftArmMtr.setTargetPosition(leftArmMtr.getCurrentPosition());
-        rightArmMtr.setTargetPosition(rightArmMtr.getCurrentPosition());
+      //  rightArmMtr.setTargetPosition(rightArmMtr.getCurrentPosition());
         leftArmMtr.setPower(power);
-        rightArmMtr.setPower(power);
+      //  rightArmMtr.setPower(power);
         leftArmMtr.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        rightArmMtr.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        //rightArmMtr.setMode(DcMotor.RunMode.RUN_TO_POSITION);
     }
 
     public double getSlideLen(String motor) {
         switch (motor) {
             case "left":
                 return leftArmMtr.getCurrentPosition() * SLIDER_LEN_RES;
-            case "right":
-                return rightArmMtr.getCurrentPosition() * SLIDER_LEN_RES;
+//            case "right":
+//                return rightArmMtr.getCurrentPosition() * SLIDER_LEN_RES;
             default:
                 return 0;
         }
@@ -121,9 +131,9 @@ public class ArmSystem {
     {
         double slidePower = -gamePad.right_stick_y;
         if (Math.abs(slidePower) > 0.3) {
-            sliderLenCtrl("both", getSlideLen("left") + slidePower * SLIDER_STEP, slidePower);
+            sliderLenCtrl("left", getSlideLen("left") + slidePower * SLIDER_STEP, slidePower);
         } else if (!armflag) {
-            sliderHoldPos("both", sliderMinPwr);
+            sliderHoldPos("left", sliderMinPwr);
         }
         if(gamePad.back&&!slow){
             SLIDER_STEP = 0.02;

@@ -41,7 +41,6 @@ public class TeleOp2025_v1 extends LinearOpMode {
     int armMax = 5000;
     //double targetAngle = Math.toRadians(90 * TFS_Auton_2024.blueVal);
     // ArmSystem armSystem;
-    private DcMotorEx Laterator = null;
     private Servo IntakeWrist = null;
     private Servo OuttakeWrist = null;
 
@@ -88,7 +87,6 @@ public class TeleOp2025_v1 extends LinearOpMode {
 
         // drive.setPoseEstimate(PoseStorage.currentPose);
         //DcMotor armLeftMotor = hardwareMap.get(DcMotor.class, "armLeft");
-        Laterator = hardwareMap.get(DcMotorEx.class, "Laterator");
         OuttakeWrist = hardwareMap.get(Servo.class, "OuttakeWrist");
         IntakeWrist = hardwareMap.get(Servo.class, "IntakeWrist");
 
@@ -101,6 +99,7 @@ public class TeleOp2025_v1 extends LinearOpMode {
 
         // arm max = -2300 - outtake position
         // arm min = -100 - intake position
+        armSystem.armTeleOp(gamepad2);
 
         waitForStart();
 
@@ -152,7 +151,6 @@ public class TeleOp2025_v1 extends LinearOpMode {
             rightRear.setPower(rrPower);
 
 
-            armSystem.armTeleOp(gamepad2);
 
             if (gamepad2.dpad_up) {//outtake
                 ClawL.setPower(1);
