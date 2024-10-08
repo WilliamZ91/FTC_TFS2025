@@ -40,7 +40,7 @@ public class TeleOp2025_v1 extends LinearOpMode {
     int armMin = 0;
     int armMax = 5000;
     //double targetAngle = Math.toRadians(90 * TFS_Auton_2024.blueVal);
-    // ArmSystem armSystem;
+     ArmSystem armSystem;
     private Servo IntakeWrist = null;
     private Servo OuttakeWrist = null;
 
@@ -57,7 +57,6 @@ public class TeleOp2025_v1 extends LinearOpMode {
     private DcMotorEx leftFront, leftRear, rightRear, rightFront;
     private boolean autoThreadFlag = false;
     private boolean traverseMode = false;
-    ArmSystem armSystem;
 
 
 
@@ -77,8 +76,8 @@ public class TeleOp2025_v1 extends LinearOpMode {
 
         // Adjust the orientation parameters to match your robot
         IMU.Parameters parameters = new IMU.Parameters(new RevHubOrientationOnRobot(
-                RevHubOrientationOnRobot.LogoFacingDirection.UP,
-                RevHubOrientationOnRobot.UsbFacingDirection.FORWARD));
+                RevHubOrientationOnRobot.LogoFacingDirection.RIGHT,
+                RevHubOrientationOnRobot.UsbFacingDirection.UP));
         // Without this, the REV Hub's orientation is assumed to be logo up / USB forward
         imu.initialize(parameters);
         //Need to put armRight and armLeft in hardware map, for armsystem code
@@ -99,12 +98,13 @@ public class TeleOp2025_v1 extends LinearOpMode {
 
         // arm max = -2300 - outtake position
         // arm min = -100 - intake position
-        armSystem.armTeleOp(gamepad2);
+        armSystem = new ArmSystem(this,false);
 
         waitForStart();
 
         if (isStopRequested()) return;
         while (opModeIsActive()) {
+            armSystem.armTeleOp(gamepad2);
 
             //Pose2d poseEstimate = drive.getPoseEstimate();
 

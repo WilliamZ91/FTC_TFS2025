@@ -31,7 +31,9 @@ public class ArmSystem {
     // public DcMotorEx rightArmMtr = null;
 
     private int sliderPosLeft;
-  //  private int sliderPosRight;
+    private int sliderPosLat;
+
+    //  private int sliderPosRight;
   //  private volatile double sliderRightLen;
     private volatile double sliderLeftLen;
     private volatile double sliderLatLen;
@@ -59,6 +61,8 @@ public class ArmSystem {
 //        sliderRightLen = getSlideLen("right");
 //        sliderPosRight = rightArmMtr.getCurrentPosition();
         sliderPosLeft = leftArmMtr.getCurrentPosition();
+        sliderPosLat = laterator.getCurrentPosition();
+
     }
     public void sliderCtrl(String motor, int position, double power) {
         switch (motor) {
@@ -90,8 +94,17 @@ public class ArmSystem {
 //                rightArmMtr.setPower(power);
 //                rightArmMtr.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 //                break;
+            case "horizontal":
+                position = Math.min(position, SLIDER_MAX);
+                position = Math.max(position, SLIDER_MIN);
+                this.sliderPosLat = position;
+                laterator.setTargetPosition(position);
+                laterator.setPower(power);
+                laterator.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                break;
         }
     }
+
 
     public void sliderLenCtrl(String motor, double len, double power) {
         int position = (int)(len / SLIDER_LEN_RES);
@@ -102,14 +115,23 @@ public class ArmSystem {
     public void stopRobotArm() {
       //  rightArmMtr.setPower(0);
         leftArmMtr.setPower(0);
+        laterator.setPower(0);
     }
     private void sliderHoldPos(String motor, double power) {
-        leftArmMtr.setTargetPosition(leftArmMtr.getCurrentPosition());
-      //  rightArmMtr.setTargetPosition(rightArmMtr.getCurrentPosition());
-        leftArmMtr.setPower(power);
-      //  rightArmMtr.setPower(power);
-        leftArmMtr.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        //rightArmMtr.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        switch (motor) {
+            case "left":
+            leftArmMtr.setTargetPosition(leftArmMtr.getCurrentPosition());
+            //  rightArmMtr.setTargetPosition(rightArmMtr.getCurrentPosition());
+            leftArmMtr.setPower(power);
+            //  rightArmMtr.setPower(power);
+            leftArmMtr.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            //rightArmMtr.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                break;
+            case "horizontal":
+                laterator.setTargetPosition(laterator.getCurrentPosition());
+                laterator.setPower(power);
+                laterator.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        }
     }
 
     public double getSlideLen(String motor) {
@@ -118,6 +140,8 @@ public class ArmSystem {
                 return leftArmMtr.getCurrentPosition() * SLIDER_LEN_RES;
 //            case "right":
 //                return rightArmMtr.getCurrentPosition() * SLIDER_LEN_RES;
+            case "horizontal":
+                return laterator.getCurrentPosition() * SLIDER_LEN_RES;
             default:
                 return 0;
         }
@@ -134,6 +158,12 @@ public class ArmSystem {
             sliderLenCtrl("left", getSlideLen("left") + slidePower * SLIDER_STEP, slidePower);
         } else if (!armflag) {
             sliderHoldPos("left", sliderMinPwr);
+        }
+        double lateratorPower = -gamePad.right_stick_y;
+        if (Math.abs(lateratorPower) > 0.3) {
+            sliderLenCtrl("horizontal", getSlideLen("horizontal") + slidePower * SLIDER_STEP, slidePower);
+        } else if (!armflag) {
+            sliderHoldPos("horizontal", sliderMinPwr);
         }
         if(gamePad.back&&!slow){
             SLIDER_STEP = 0.02;
