@@ -1,40 +1,30 @@
 package org.firstinspires.ftc.teamcode;
 
-import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
-import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.hardware.HardwareMap;
 
-@TeleOp(name = "Arm Extension TeleOp", group = "Linear Opmode")
-public class ArmExtendHardware extends LinearOpMode {
-
-    // Declare arm extension hardware component
+public class ArmExtendHardware {
     private DcMotor Arm_ExtendMotor;
 
     // Arm extension limits and speed
-    private final double maxExtendArm = 0.6; // Maximum extension length (in meters)
+    private final double maxExtendArm = 0.48; // Maximum extension length (adjust this based on your setup)
     private final double minExtendArm = 0.01; // Minimum extension length
     private final double Arm_extend_distanceRatio = 2952 / 0.88; // Encoder counts per meter
-    private final double speedExtend = 0.1; // Speed for extending the arm
+    private final double speedExtend = 0.2; // Increased speed for smoother and faster extension
 
-    @Override
-    public void runOpMode() {
-        initArmExtendHardware();
-
-
-        waitForStart();
-
-        while (opModeIsActive()) {
-            controlArmExtend(gamepad2.right_stick_y);
-             // Control the arm extension with right joystick input
-        }
-    }
-
-    // Initialize the hardware component for arm extension
-    public void initArmExtendHardware() {
-        Arm_ExtendMotor = hardwareMap.dcMotor.get("laterator");
+    // Constructor for initializing the hardware
+    public void initArmExtendHardware(HardwareMap hardwareMap) {
+        Arm_ExtendMotor = hardwareMap.get(DcMotor.class, "laterator");
         Arm_ExtendMotor.setDirection(DcMotorSimple.Direction.REVERSE); // Adjust direction if needed
         Arm_ExtendMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        resetEncoder(); // Reset encoder on initialization
+    }
+
+    // Reset encoder function
+    public void resetEncoder() {
+        Arm_ExtendMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        Arm_ExtendMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
     }
 
     // Function to extend the arm to a target position (in meters)
@@ -52,13 +42,19 @@ public class ArmExtendHardware extends LinearOpMode {
         Arm_ExtendMotor.setPower(0); // Stop the motor once the target is reached
     }
 
-    // Use this method in your tele-op loop to control the arm extension with gamepad input
+    // Tele-op function to control arm extension with gamepad input and provide smooth movement
     public void controlArmExtend(double gamepadInput) {
         double currentExtendPosition = Arm_ExtendMotor.getCurrentPosition() / Arm_extend_distanceRatio;
 
-        if (Math.abs(gamepadInput) > 0.1) { // Check for significant input from the gamepad
+        // Update the logic to allow retracting even if at maximum extension
+        if (gamepadInput < -0.1 && currentExtendPosition > minExtendArm) { // Retract
             double targetExtendArm = currentExtendPosition + (gamepadInput * speedExtend);
-            Arm_Extend_Position(targetExtendArm, 0.5); // Adjust power based on your need
+            if (targetExtendArm < minExtendArm) targetExtendArm = minExtendArm;
+            Arm_Extend_Position(targetExtendArm, 0.75); // Increased power for smoother movement
+        } else if (gamepadInput > 0.1 && currentExtendPosition < maxExtendArm) { // Extend
+            double targetExtendArm = currentExtendPosition + (gamepadInput * speedExtend);
+            if (targetExtendArm > maxExtendArm) targetExtendArm = maxExtendArm;
+            Arm_Extend_Position(targetExtendArm, 0.75); // Increased power for smoother movement
         }
     }
 }

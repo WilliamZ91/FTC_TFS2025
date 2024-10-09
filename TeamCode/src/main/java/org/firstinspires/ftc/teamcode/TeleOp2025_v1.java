@@ -61,6 +61,8 @@ public class TeleOp2025_v1 extends LinearOpMode {
 
 
     private int bButton_DelayCnt = 0;
+    private ArmExtendHardware armExtendHardware;
+
 
     @Override
     public void runOpMode() throws InterruptedException {
@@ -99,6 +101,8 @@ public class TeleOp2025_v1 extends LinearOpMode {
         // arm max = -2300 - outtake position
         // arm min = -100 - intake position
         //armSystem = new ArmSystem(this,false);
+        armExtendHardware = new ArmExtendHardware();
+        armExtendHardware.initArmExtendHardware(hardwareMap); // Call the initialization function
 
         waitForStart();
 
@@ -120,6 +124,7 @@ public class TeleOp2025_v1 extends LinearOpMode {
                 speedFactor = 0.5;
             }
 
+            armExtendHardware.controlArmExtend(gamepad2.right_stick_y);
 
             // now the orientation of robot is changed
             double leftStickXPos = gamepad1.left_stick_x * speedFactor;
@@ -187,7 +192,7 @@ public class TeleOp2025_v1 extends LinearOpMode {
             } else {
                 telemetry.addLine("thread end");
             }
-            telemetry.addData("Horizontal Slide", armSystem.getSlideLen("horizontal"));
+            //telemetry.addData("Horizontal Slide", ArmExtendHardware.Arm_ExtendMotor.getCurrentPosition());
 
             telemetry.update();
             sleep(33);
