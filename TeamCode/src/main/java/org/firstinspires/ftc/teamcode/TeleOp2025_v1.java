@@ -98,14 +98,15 @@ public class TeleOp2025_v1 extends LinearOpMode {
 
         // arm max = -2300 - outtake position
         // arm min = -100 - intake position
-        armSystem = new ArmSystem(this,false);
+        //armSystem = new ArmSystem(this,false);
 
         waitForStart();
 
         if (isStopRequested()) return;
         while (opModeIsActive()) {
-            armSystem.armTeleOp(gamepad2);
 
+            //armSystem.armTeleOp(gamepad2);
+            //ArmExtendHardware.(gamepad2.right_stick_y);
             //Pose2d poseEstimate = drive.getPoseEstimate();
 
             // Update everything. Odometry. Etc.
@@ -182,9 +183,12 @@ public class TeleOp2025_v1 extends LinearOpMode {
 
             if (autoThreadFlag) {
                 telemetry.addLine("thread start");
+
             } else {
                 telemetry.addLine("thread end");
             }
+            telemetry.addData("Horizontal Slide", armSystem.getSlideLen("horizontal"));
+
             telemetry.update();
             sleep(33);
         }

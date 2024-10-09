@@ -18,12 +18,12 @@ public class ArmSystem {
     private static final int SLIDER_STAGE = 4;
     private static final double SLIDER_STAGE_LEN = 0.1746; // unit: m
     private final int SLIDER_MIN = 0;
-    private final int SLIDER_MAX= 3000; //(int)(SLIDER_STAGE * SLIDER_STAGE_LEN / (Math.PI * (PULL_WHEEL_DIA * 3)) * SLIDER_PPR); // Max slider position
+    private final int SLIDER_MAX= 6000; //(int)(SLIDER_STAGE * SLIDER_STAGE_LEN / (Math.PI * (PULL_WHEEL_DIA * 3)) * SLIDER_PPR); // Max slider position
     private static final double SLIDER_LEN_RES = (Math.PI * PULL_WHEEL_DIA) / SLIDER_PPR;
     private static volatile double sliderBtnCnt = 0;
     private static volatile double sliderPwr = 0;
     private double slideStep = 0.2;
-    private static volatile double sliderMinPwr = 0.3;
+    private static volatile double sliderMinPwr = 0.15;
     // Slider related instance variables
     public DcMotorEx leftArmMtr = null;
     public DcMotorEx laterator = null;
@@ -37,7 +37,7 @@ public class ArmSystem {
   //  private volatile double sliderRightLen;
     private volatile double sliderLeftLen;
     private volatile double sliderLatLen;
-    public boolean armflag;
+    //public boolean armflag;
 
     public ArmSystem(LinearOpMode mainTask, boolean auto) {
         leftArmMtr = mainTask.hardwareMap.get(DcMotorEx.class, "armL");
@@ -53,8 +53,8 @@ public class ArmSystem {
 //        rightArmMtr.setDirection(DcMotor.Direction.REVERSE);
 //        rightArmMtr.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 //        rightArmMtr.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-//        rightArmMtr.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-//        leftArmMtr.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        laterator.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        leftArmMtr.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         sliderLeftLen = getSlideLen("left");
         sliderLatLen = getSlideLen("horizontal");
 
@@ -156,15 +156,15 @@ public class ArmSystem {
         double slidePower = -gamePad.right_stick_y;
         if (Math.abs(slidePower) > 0.3) {
             sliderLenCtrl("left", getSlideLen("left") + slidePower * SLIDER_STEP, slidePower);
-        } else if (!armflag) {
+        } /*else if (!armflag) {
             sliderHoldPos("left", sliderMinPwr);
-        }
-        double lateratorPower = -gamePad.right_stick_y;
+        }*/
+        double lateratorPower = -gamePad.left_stick_y;
         if (Math.abs(lateratorPower) > 0.3) {
-            sliderLenCtrl("horizontal", getSlideLen("horizontal") + slidePower * SLIDER_STEP, slidePower);
-        } else if (!armflag) {
+            sliderLenCtrl("horizontal", getSlideLen("horizontal") + lateratorPower * SLIDER_STEP, lateratorPower);
+        } /*else if (!armflag) {
             sliderHoldPos("horizontal", sliderMinPwr);
-        }
+        }*/
         if(gamePad.back&&!slow){
             SLIDER_STEP = 0.02;
             slow = true;
