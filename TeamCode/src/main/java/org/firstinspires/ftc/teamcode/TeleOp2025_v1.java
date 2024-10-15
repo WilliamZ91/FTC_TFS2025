@@ -61,7 +61,7 @@ public class TeleOp2025_v1 extends LinearOpMode {
 
 
     private int bButton_DelayCnt = 0;
-    private ArmExtendHardware armExtendHardware;
+    private ArmExtension armExtension;
 
 
     @Override
@@ -94,15 +94,10 @@ public class TeleOp2025_v1 extends LinearOpMode {
         ClawL = hardwareMap.get(CRServo.class, "ClawL");
         ClawR = hardwareMap.get(CRServo.class, "ClawR");
 
+        armExtension = new ArmExtension();
+        armExtension.initArmExtensionHardware(hardwareMap);
 
 
-
-
-        // arm max = -2300 - outtake position
-        // arm min = -100 - intake position
-        //armSystem = new ArmSystem(this,false);
-        armExtendHardware = new ArmExtendHardware();
-        armExtendHardware.initArmExtendHardware(hardwareMap); // Call the initialization function
 
         waitForStart();
 
@@ -124,7 +119,14 @@ public class TeleOp2025_v1 extends LinearOpMode {
                 speedFactor = 0.5;
             }
 
-            armExtendHardware.controlArmExtend(gamepad2.right_stick_y);
+            // Control horizontal slide (laterator) with right joystick (horizontal)
+            armExtension.controlHorizontalExtend(gamepad2.right_stick_x);
+
+            // Control vertical slide with left joystick (vertical)
+            armExtension.controlVerticalExtend(gamepad2.left_stick_y);
+
+            // Add telemetry to show the length of both slides
+
 
             // now the orientation of robot is changed
             double leftStickXPos = gamepad1.left_stick_x * speedFactor;
@@ -174,7 +176,7 @@ public class TeleOp2025_v1 extends LinearOpMode {
                 OuttakeWrist.setPosition(0);//outtake
             }
             if (gamepad2.b) {//intake
-                OuttakeWrist.setPosition(0.7);
+                OuttakeWrist.setPosition(0.35);
             }
             if (gamepad2.left_bumper) {//outtake
                 IntakeWrist.setPosition(0.15);
@@ -193,7 +195,8 @@ public class TeleOp2025_v1 extends LinearOpMode {
                 telemetry.addLine("thread end");
             }
             //telemetry.addData("Horizontal Slide", ArmExtendHardware.Arm_ExtendMotor.getCurrentPosition());
-
+            telemetry.addData("Horizontal Slide Length (m)", armExtension.getCurrentHorizontalLength());
+            telemetry.addData("Vertical Slide Length (m)", armExtension.getCurrentVerticalLength());
             telemetry.update();
             sleep(33);
         }
