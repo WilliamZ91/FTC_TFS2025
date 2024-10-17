@@ -1,13 +1,12 @@
 package org.firstinspires.ftc.teamcode;
 
-import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
-import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.DistanceSensor;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
+import com.qualcomm.robotcore.hardware.IMU;
 
-@TeleOp(name="FTC SIM", group="Linear OpMode")
+@TeleOp
 public class FTCSim_Test extends LinearOpMode {
     DcMotor backLeftDrive;
     DcMotor backRightDrive;
@@ -16,7 +15,7 @@ public class FTCSim_Test extends LinearOpMode {
     DcMotor armTilt;
     DcMotor armExtend;
     DcMotor claw;
-    BNO055IMU imu;
+    IMU imu;
 
     @Override
     public void runOpMode() {
@@ -24,23 +23,23 @@ public class FTCSim_Test extends LinearOpMode {
         backRightDrive = hardwareMap.get(DcMotor.class, "rr");
         frontLeftDrive = hardwareMap.get(DcMotor.class, "lf");
         frontRightDrive = hardwareMap.get(DcMotor.class, "rf");
-        // Put initialization blocks here
+        imu = hardwareMap.get(IMU.class, "imu");
         backLeftDrive.setDirection(DcMotor.Direction.REVERSE);
         frontLeftDrive.setDirection(DcMotor.Direction.REVERSE);
+
+        // Put initialization blocks here
         waitForStart();
         // Put run blocks here
+        sleep(500);
         backLeftDrive.setPower(1);
         backRightDrive.setPower(1);
         frontLeftDrive.setPower(1);
         frontRightDrive.setPower(1);
-        sleep(100); 
+        sleep(150);
         backLeftDrive.setPower(0);
         backRightDrive.setPower(0);
-        frontLeftDrive.setPower(0);
         frontRightDrive.setPower(0);
-        sleep(1000);
-        while (opModeIsActive()) {
-            // Put loop blocks here
-        }
+        frontLeftDrive.setPower(0);
     }
+
 }

@@ -71,7 +71,7 @@ public class TeleOp2025_v1 extends LinearOpMode {
         leftRear = hardwareMap.get(DcMotorEx.class, "lr");
         rightRear = hardwareMap.get(DcMotorEx.class, "rr");
         rightFront = hardwareMap.get(DcMotorEx.class, "rf");
-        leftFront.setDirection(DcMotor.Direction.REVERSE);
+        leftFront.setDirection(DcMotor.Direction.FORWARD);
         leftRear.setDirection(DcMotor.Direction.FORWARD);
         rightRear.setDirection(DcMotor.Direction.REVERSE);
         rightFront.setDirection(DcMotor.Direction.REVERSE);
@@ -101,6 +101,9 @@ public class TeleOp2025_v1 extends LinearOpMode {
 
         waitForStart();
 
+        IntakeWrist.setPosition(0.8);
+        sleep(1000);
+        OuttakeWrist.setPosition(0.4);
         if (isStopRequested()) return;
         while (opModeIsActive()) {
 
@@ -173,10 +176,10 @@ public class TeleOp2025_v1 extends LinearOpMode {
                 ClawR.setPower(0);
             }
             if (gamepad2.a) {
-                OuttakeWrist.setPosition(0);//outtake
+                OuttakeWrist.setPosition(-1);//outtake
             }
             if (gamepad2.b) {//intake
-                OuttakeWrist.setPosition(0.35);
+                OuttakeWrist.setPosition(0.47);
             }
             if (gamepad2.left_bumper) {//outtake
                 IntakeWrist.setPosition(0.15);
@@ -184,7 +187,9 @@ public class TeleOp2025_v1 extends LinearOpMode {
             if (gamepad2.right_bumper) {//intake
                 IntakeWrist.setPosition(0.95);
             }
-
+            if (gamepad2.dpad_left) {//traverse
+                IntakeWrist.setPosition(0.50);
+            }
 
 
 
