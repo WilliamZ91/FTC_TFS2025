@@ -51,20 +51,20 @@ public class ArmExtension {
         double currentHorizontalPosition = Arm_HorizontalMotor.getCurrentPosition() / horizontal_distanceRatio;
 
         if (gamepadInput < -0.1 && currentHorizontalPosition > minHorizontalArm) { // Retract
-            Arm_HorizontalMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+            //Arm_HorizontalMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
             double targetHorizontalArm = currentHorizontalPosition + (gamepadInput * speedHorizontal);
             if (targetHorizontalArm < minHorizontalArm) targetHorizontalArm = minHorizontalArm;
             Arm_Horizontal_Position(targetHorizontalArm, 0.75);
         } else if (gamepadInput > 0.1 && currentHorizontalPosition < maxHorizontalArm) { // Extend
-            Arm_HorizontalMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+            //Arm_HorizontalMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
             double targetHorizontalArm = currentHorizontalPosition + (gamepadInput * speedHorizontal);
             if (targetHorizontalArm > maxHorizontalArm) targetHorizontalArm = maxHorizontalArm;
             Arm_Horizontal_Position(targetHorizontalArm, 0.75);
         }
 
-        if (currentHorizontalPosition >= maxHorizontalArm || currentHorizontalPosition <= minHorizontalArm) {
-            resetHorizontalEncoder();
-        }
+        /*if (currentHorizontalPosition >= maxHorizontalArm || currentHorizontalPosition <= minHorizontalArm) {
+           // resetHorizontalEncoder();
+        }*/
     }
 
     // Function to control vertical slide
@@ -72,20 +72,20 @@ public class ArmExtension {
         double currentVerticalPosition = Arm_VerticalMotor.getCurrentPosition() / vertical_distanceRatio;
 
         if (gamepadInput < -0.1 && currentVerticalPosition > minVerticalArm) { // Retract
-            Arm_VerticalMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+//            Arm_VerticalMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
             double targetVerticalArm = currentVerticalPosition + (gamepadInput * speedVertical);
             if (targetVerticalArm < minVerticalArm) targetVerticalArm = minVerticalArm;
             Arm_Vertical_Position(targetVerticalArm, 0.75);
         } else if (gamepadInput > 0.1 && currentVerticalPosition < maxVerticalArm) { // Extend
-            Arm_VerticalMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+//            Arm_VerticalMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
             double targetVerticalArm = currentVerticalPosition + (gamepadInput * speedVertical);
             if (targetVerticalArm > maxVerticalArm) targetVerticalArm = maxVerticalArm;
             Arm_Vertical_Position(targetVerticalArm, 0.75);
         }
 
-        if (currentVerticalPosition >= maxVerticalArm || currentVerticalPosition <= minVerticalArm) {
-            resetVerticalEncoder();
-        }
+        /*if (currentVerticalPosition >= maxVerticalArm || currentVerticalPosition <= minVerticalArm) {
+            //resetVerticalEncoder();
+        }*/
     }
 
     // Helper functions for positioning

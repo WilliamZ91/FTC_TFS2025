@@ -71,10 +71,10 @@ public class TeleOp2025_v1 extends LinearOpMode {
         leftRear = hardwareMap.get(DcMotorEx.class, "lr");
         rightRear = hardwareMap.get(DcMotorEx.class, "rr");
         rightFront = hardwareMap.get(DcMotorEx.class, "rf");
-        leftFront.setDirection(DcMotor.Direction.FORWARD);
-        leftRear.setDirection(DcMotor.Direction.FORWARD);
-        rightRear.setDirection(DcMotor.Direction.REVERSE);
-        rightFront.setDirection(DcMotor.Direction.REVERSE);
+        leftFront.setDirection(DcMotor.Direction.REVERSE);
+        leftRear.setDirection(DcMotor.Direction.REVERSE);
+        rightRear.setDirection(DcMotor.Direction.FORWARD);
+        rightFront.setDirection(DcMotor.Direction.FORWARD);
 
         // Adjust the orientation parameters to match your robot
         IMU.Parameters parameters = new IMU.Parameters(new RevHubOrientationOnRobot(
@@ -99,11 +99,14 @@ public class TeleOp2025_v1 extends LinearOpMode {
 
 
 
-        waitForStart();
 
         IntakeWrist.setPosition(0.8);
         sleep(1000);
-        OuttakeWrist.setPosition(0.4);
+        OuttakeWrist.setPosition(0.41);
+
+        waitForStart();
+
+
         if (isStopRequested()) return;
         while (opModeIsActive()) {
 
@@ -138,10 +141,10 @@ public class TeleOp2025_v1 extends LinearOpMode {
 
             double denominator = Math.max(Math.abs(leftStickYPos) + Math.abs(leftStickXPos) + Math.abs(rightStickXPos), 1);
 
-            double lfPower = (leftStickYPos - leftStickXPos - rightStickXPos) / denominator;
-            double lrPower = (leftStickYPos + leftStickXPos - rightStickXPos) / denominator;
-            double rfPower = (leftStickYPos + leftStickXPos + rightStickXPos) / denominator;
-            double rrPower = (leftStickYPos - leftStickXPos + rightStickXPos) / denominator;
+            double lfPower = (-leftStickYPos - leftStickXPos - rightStickXPos) / denominator;
+            double lrPower = (-leftStickYPos + leftStickXPos - rightStickXPos) / denominator;
+            double rfPower = (-leftStickYPos + leftStickXPos + rightStickXPos) / denominator;
+            double rrPower = (-leftStickYPos - leftStickXPos + rightStickXPos) / denominator;
 
             // Normalize the values so no wheel power exceeds 100%
             // This ensures that the robot maintains the desired motion.
@@ -185,7 +188,7 @@ public class TeleOp2025_v1 extends LinearOpMode {
                 IntakeWrist.setPosition(0.15);
             }
             if (gamepad2.right_bumper) {//intake
-                IntakeWrist.setPosition(0.95);
+                IntakeWrist.setPosition(0.92);
             }
             if (gamepad2.dpad_left) {//traverse
                 IntakeWrist.setPosition(0.50);
