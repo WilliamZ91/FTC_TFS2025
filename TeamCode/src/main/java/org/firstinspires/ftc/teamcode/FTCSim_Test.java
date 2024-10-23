@@ -25,21 +25,43 @@ public class FTCSim_Test extends LinearOpMode {
         frontRightDrive = hardwareMap.get(DcMotor.class, "rf");
         imu = hardwareMap.get(IMU.class, "imu");
         backLeftDrive.setDirection(DcMotor.Direction.REVERSE);
+       backRightDrive.setDirection(DcMotor.Direction.REVERSE);
         frontLeftDrive.setDirection(DcMotor.Direction.REVERSE);
+        frontRightDrive.setDirection(DcMotor.Direction.FORWARD);
+//for the big robot chassis
+
 
         // Put initialization blocks here
         waitForStart();
         // Put run blocks here
-        sleep(500);
-        backLeftDrive.setPower(1);
-        backRightDrive.setPower(1);
-        frontLeftDrive.setPower(1);
-        frontRightDrive.setPower(1);
-        sleep(150);
-        backLeftDrive.setPower(0);
-        backRightDrive.setPower(0);
-        frontRightDrive.setPower(0);
-        frontLeftDrive.setPower(0);
+
+//        backLeftDrive.setPower(1);
+//        backRightDrive.setPower(1);
+//        frontLeftDrive.setPower(1);
+//        frontRightDrive.setPower(1);
+//        sleep(150);
+
+        if (isStopRequested()) return;
+        while (opModeIsActive()) {
+            if (gamepad1.a) {
+                backLeftDrive.setPower(0.5);
+            }
+            if (gamepad1.b) {
+                frontLeftDrive.setPower(0.5);
+            }
+            if (gamepad1.x) {
+                backRightDrive.setPower(0.5);
+            }
+            if (gamepad1.y) {
+                frontRightDrive.setPower(0.5);
+            }
+            if (gamepad1.dpad_down) {
+                backLeftDrive.setPower(0);
+                backRightDrive.setPower(0);
+                frontRightDrive.setPower(0);
+                frontLeftDrive.setPower(0);
+            }
+        }
     }
 
 }
