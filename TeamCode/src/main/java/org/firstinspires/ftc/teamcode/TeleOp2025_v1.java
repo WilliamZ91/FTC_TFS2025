@@ -37,8 +37,6 @@ public class TeleOp2025_v1 extends LinearOpMode {
     }
 
     Mode currentMode = Mode.DRIVER_CONTROL;
-    int armMin = 0;
-    int armMax = 5000;
     //double targetAngle = Math.toRadians(90 * TFS_Auton_2024.blueVal);
      ArmSystem armSystem;
     private Servo IntakeWrist = null;

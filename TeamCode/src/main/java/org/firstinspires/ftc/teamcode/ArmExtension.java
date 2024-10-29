@@ -17,7 +17,7 @@ public class ArmExtension {
     // Limits and speed for vertical slide
     private final double maxVerticalArm = 0.70; // Max vertical extension length
     private final double minVerticalArm = 0.01; // Min vertical extension length
-    private final double vertical_distanceRatio = 4000 / 1.0; // Encoder counts per meter for vertical
+    private final double vertical_distanceRatio = 10000 / 1.0; // Encoder counts per meter for vertical
     private final double speedVertical = 0.2; // Speed for vertical slide
 
     // Constructor for initializing the hardware

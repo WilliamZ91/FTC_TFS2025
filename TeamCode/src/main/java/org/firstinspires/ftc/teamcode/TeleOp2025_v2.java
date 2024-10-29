@@ -38,15 +38,12 @@ public class TeleOp2025_v2 extends LinearOpMode {
 
     Mode currentMode = Mode.DRIVER_CONTROL;
     int armMin = 0;
-    int armMax = 5000;
+    int armMax = 10000;
     //double targetAngle = Math.toRadians(90 * TFS_Auton_2024.blueVal);
     ArmSystem armSystem;
-    private Servo IntakeWrist = null;
-    private Servo OuttakeWrist = null;
 
+    private Servo specimen;
 
-    private CRServo ClawL = null;
-    private CRServo ClawR = null;
 
     private double speedfactor = 1.0;
     private double imuAngle = 0.0;
@@ -71,6 +68,7 @@ public class TeleOp2025_v2 extends LinearOpMode {
         leftRear = hardwareMap.get(DcMotorEx.class, "lr");
         rightRear = hardwareMap.get(DcMotorEx.class, "rr");
         rightFront = hardwareMap.get(DcMotorEx.class, "rf");
+        specimen = hardwareMap.get(Servo.class, "specimen");
         leftRear.setDirection(DcMotor.Direction.REVERSE);
         rightRear.setDirection(DcMotor.Direction.REVERSE);
         leftFront.setDirection(DcMotor.Direction.REVERSE);
@@ -90,11 +88,6 @@ public class TeleOp2025_v2 extends LinearOpMode {
         //DcMotor armLeftMotor = hardwareMap.get(DcMotor.class, "armLeft");
 
 
-//        OuttakeWrist = hardwareMap.get(Servo.class, "OuttakeWrist");
-//        IntakeWrist = hardwareMap.get(Servo.class, "IntakeWrist");
-//
-//        ClawL = hardwareMap.get(CRServo.class, "ClawL");
-//        ClawR = hardwareMap.get(CRServo.class, "ClawR");
 
         armExtension2 = new ArmExtension2();
         armExtension2.initArmExtensionHardware(hardwareMap);
@@ -107,7 +100,7 @@ public class TeleOp2025_v2 extends LinearOpMode {
 //        OuttakeWrist.setPosition(0.41);
 
         waitForStart();
-
+        armExtension2.resetVerticalEncoder();
 
         if (isStopRequested()) return;
         while (opModeIsActive()) {
@@ -167,15 +160,14 @@ public class TeleOp2025_v2 extends LinearOpMode {
             rightRear.setPower(rrPower);
 
 
-//
-//            if (gamepad2.dpad_up) {//outtake
-//                ClawL.setPower(1);
-//                ClawR.setPower(-1);
-//            }
-//            if (gamepad2.dpad_down) {//intake
-//                ClawL.setPower(-1);
-//                ClawR.setPower(1);
-//            }
+
+            if (gamepad2.dpad_up) { //specimen open
+                specimen.setPosition(0.55);
+            }
+
+            if (gamepad2.dpad_down) { //specimen close
+                specimen.setPosition(0.95);
+            }
 //            if (gamepad2.dpad_right) {//stop
 //                ClawL.setPower(0);
 //                ClawR.setPower(0);
@@ -186,13 +178,13 @@ public class TeleOp2025_v2 extends LinearOpMode {
 //            if (gamepad2.b) {//intake
 //                OuttakeWrist.setPosition(0.47);
 //            }
-//            if (gamepad2.left_bumper) {//outtake
+//            if (gamepad2.x) {//outtake
 //                IntakeWrist.setPosition(0.15);
 //            }
-//            if (gamepad2.right_bumper) {//intake
+//            if (gamepad2.y) {//intake
 //                IntakeWrist.setPosition(0.92);
 //            }
-//            if (gamepad2.dpad_left) {//traverse
+//            if (gamepad2.right_bumper) {//traverse
 //                IntakeWrist.setPosition(0.50);
 //            }
 
