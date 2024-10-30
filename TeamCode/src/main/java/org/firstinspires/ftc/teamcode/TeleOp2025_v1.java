@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode;
 
 import android.graphics.SweepGradient;
+import android.graphics.Color;
 
 import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
@@ -16,6 +17,7 @@ import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.hardware.TouchSensor;
 import com.qualcomm.robotcore.util.ElapsedTime;
+import com.qualcomm.robotcore.hardware.ColorSensor;
 
 import org.firstinspires.ftc.robotcore.external.ClassFactory;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
@@ -42,11 +44,12 @@ public class TeleOp2025_v1 extends LinearOpMode {
     private Servo IntakeWrist = null;
     private Servo OuttakeWrist = null;
 
+    ColorSensor colorSensor;
 
     private CRServo ClawL = null;
     private CRServo ClawR = null;
 
-    private double speedfactor = 1.0;
+    private double speedfactor = 0.4;
     private double imuAngle = 0.0;
 
 
@@ -69,6 +72,7 @@ public class TeleOp2025_v1 extends LinearOpMode {
         leftRear = hardwareMap.get(DcMotorEx.class, "lr");
         rightRear = hardwareMap.get(DcMotorEx.class, "rr");
         rightFront = hardwareMap.get(DcMotorEx.class, "rf");
+        colorSensor = hardwareMap.get(ColorSensor.class, "colorSensor");
         leftFront.setDirection(DcMotor.Direction.REVERSE);
         leftRear.setDirection(DcMotor.Direction.REVERSE);
         rightRear.setDirection(DcMotor.Direction.FORWARD);
@@ -95,6 +99,14 @@ public class TeleOp2025_v1 extends LinearOpMode {
         armExtension = new ArmExtension();
         armExtension.initArmExtensionHardware(hardwareMap);
 
+        float hsvValues[] = {0F, 0F, 0F};
+
+        // values is a reference to the hsvValues array.
+        final float values[] = hsvValues;
+
+        // sometimes it helps to multiply the raw RGB values with a scale factor
+        // to amplify/attentuate the measured values.
+        final double SCALE_FACTOR = 255;
 
 
 
@@ -163,6 +175,29 @@ public class TeleOp2025_v1 extends LinearOpMode {
             rightRear.setPower(rrPower);
 
 
+            Color.RGBToHSV((int) (colorSensor.red() * SCALE_FACTOR),
+                    (int) (colorSensor.green() * SCALE_FACTOR),
+                    (int) (colorSensor.blue() * SCALE_FACTOR),
+                    hsvValues);
+
+            String detectedColor;
+            if (hsvValues[0] >= 10 && hsvValues[0] <= 30) {
+                detectedColor = "Red";
+            } else if (hsvValues[0] >= 70 && hsvValues[0] <= 90) {
+                detectedColor = "Yellow";
+            } else if (hsvValues[0] >= 200 && hsvValues[0] <= 225) {
+                detectedColor = "Blue";
+            } else {
+                detectedColor = "Unknown";
+            }
+
+
+
+            if (detectedColor.equals("Red") || detectedColor.equals("Yellow") || detectedColor.equals("Blue")) {
+                ClawL.setPower(0);
+                ClawR.setPower(0);
+            }
+
 
             if (gamepad2.dpad_up) {//outtake
                 ClawL.setPower(1);
@@ -186,7 +221,7 @@ public class TeleOp2025_v1 extends LinearOpMode {
                 IntakeWrist.setPosition(0.15);
             }
             if (gamepad2.right_bumper) {//intake
-                IntakeWrist.setPosition(0.92);
+                IntakeWrist.setPosition(0.90);
             }
             if (gamepad2.dpad_left) {//traverse
                 IntakeWrist.setPosition(0.50);
@@ -203,6 +238,18 @@ public class TeleOp2025_v1 extends LinearOpMode {
             //telemetry.addData("Horizontal Slide", ArmExtendHardware.Arm_ExtendMotor.getCurrentPosition());
             telemetry.addData("Horizontal Slide Length (m)", armExtension.getCurrentHorizontalLength());
             telemetry.addData("Vertical Slide Length (m)", armExtension.getCurrentVerticalLength());
+            telemetry.addData("Red:", colorSensor.red());
+            telemetry.addData("Green:", colorSensor.green());
+            telemetry.addData("Blue:", colorSensor.blue());
+
+
+            telemetry.addData("Hue", hsvValues[0]);
+
+
+
+            // Add the detected color to telemetry
+            telemetry.addData("Color Detected:", detectedColor);
+            // Display the detected color on telemetry
             telemetry.update();
             sleep(33);
         }
