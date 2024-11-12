@@ -48,6 +48,8 @@ public class TeleOp2025_v1 extends LinearOpMode {
 
     private CRServo ClawL = null;
     private CRServo ClawR = null;
+    private Servo specimen;
+
 
     private double speedfactor = 0.4;
     private double imuAngle = 0.0;
@@ -73,10 +75,10 @@ public class TeleOp2025_v1 extends LinearOpMode {
         rightRear = hardwareMap.get(DcMotorEx.class, "rr");
         rightFront = hardwareMap.get(DcMotorEx.class, "rf");
         colorSensor = hardwareMap.get(ColorSensor.class, "colorSensor");
-        leftFront.setDirection(DcMotor.Direction.REVERSE);
-        leftRear.setDirection(DcMotor.Direction.REVERSE);
-        rightRear.setDirection(DcMotor.Direction.FORWARD);
-        rightFront.setDirection(DcMotor.Direction.FORWARD);
+        leftFront.setDirection(DcMotor.Direction.FORWARD);
+        leftRear.setDirection(DcMotor.Direction.FORWARD);
+        rightRear.setDirection(DcMotor.Direction.REVERSE);
+        rightFront.setDirection(DcMotor.Direction.REVERSE);
 
         // Adjust the orientation parameters to match your robot
         IMU.Parameters parameters = new IMU.Parameters(new RevHubOrientationOnRobot(
@@ -92,7 +94,7 @@ public class TeleOp2025_v1 extends LinearOpMode {
         //DcMotor armLeftMotor = hardwareMap.get(DcMotor.class, "armLeft");
         OuttakeWrist = hardwareMap.get(Servo.class, "OuttakeWrist");
         IntakeWrist = hardwareMap.get(Servo.class, "IntakeWrist");
-
+        specimen = hardwareMap.get(Servo.class, "specimen");
         ClawL = hardwareMap.get(CRServo.class, "ClawL");
         ClawR = hardwareMap.get(CRServo.class, "ClawR");
 
@@ -145,16 +147,16 @@ public class TeleOp2025_v1 extends LinearOpMode {
 
 
             // now the orientation of robot is changed
-            double leftStickXPos = gamepad1.left_stick_x * speedFactor;
-            double leftStickYPos = gamepad1.left_stick_y * speedFactor;
-            double rightStickXPos = -gamepad1.right_stick_x * speedFactor;
+            double forwardBackward = gamepad1.left_stick_y * speedFactor; // Controls forward/backward movement
+            double strafe = gamepad1.left_stick_x * speedFactor;          // Controls left/right strafing
+            double rotation = gamepad1.right_stick_x * speedFactor;       // Controls rotation
 
-            double denominator = Math.max(Math.abs(leftStickYPos) + Math.abs(leftStickXPos) + Math.abs(rightStickXPos), 1);
+            double denominator = Math.max(Math.abs(forwardBackward) + Math.abs(strafe) + Math.abs(rotation), 1);
 
-            double lfPower = (-leftStickYPos - leftStickXPos - rightStickXPos) / denominator;
-            double lrPower = (-leftStickYPos + leftStickXPos - rightStickXPos) / denominator;
-            double rfPower = (-leftStickYPos + leftStickXPos + rightStickXPos) / denominator;
-            double rrPower = (-leftStickYPos - leftStickXPos + rightStickXPos) / denominator;
+            double lfPower = (forwardBackward + strafe + rotation) / denominator;
+            double lrPower = (forwardBackward - strafe + rotation) / denominator;
+            double rfPower = (forwardBackward - strafe - rotation) / denominator;
+            double rrPower = (forwardBackward + strafe - rotation) / denominator;
 
             // Normalize the values so no wheel power exceeds 100%
             // This ensures that the robot maintains the desired motion.
@@ -226,6 +228,35 @@ public class TeleOp2025_v1 extends LinearOpMode {
             if (gamepad2.dpad_left) {//traverse
                 IntakeWrist.setPosition(0.50);
             }
+
+
+            /*
+            SEMI AUTONOMOUS PLANNING
+
+            Original Position:
+            - Traverse Intake
+            - Laterator + Vertical Retracted
+            - Bucket
+
+
+            Semi-Auton:
+            - Laterator Out
+            - Intake Position
+            - Intake Wheels
+            - Bucket Transfer Position
+
+            - Outtake Position
+            - Outtake Wheels
+            - Laterator retract
+
+            - Bucket Outtake
+            - Vertical Up
+
+
+         if(gamepad2. insertbutton){
+         Arm_HorizontalMotor.RUN_TOPOSITION
+         }
+             */
 
 
 

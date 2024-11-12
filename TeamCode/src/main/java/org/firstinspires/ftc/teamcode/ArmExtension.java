@@ -1,5 +1,7 @@
 package org.firstinspires.ftc.teamcode;
 
+import static org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion.telemetry;
+
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
@@ -17,7 +19,7 @@ public class ArmExtension {
     // Limits and speed for vertical slide
     private final double maxVerticalArm = 0.70; // Max vertical extension length
     private final double minVerticalArm = 0.01; // Min vertical extension length
-    private final double vertical_distanceRatio = 10000 / 1.0; // Encoder counts per meter for vertical
+    private final double vertical_distanceRatio = 4000 / 1.0; // Encoder counts per meter for vertical
     private final double speedVertical = 0.2; // Speed for vertical slide
 
     // Constructor for initializing the hardware
@@ -28,11 +30,25 @@ public class ArmExtension {
         Arm_HorizontalMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         resetHorizontalEncoder();
 
+//        if (Arm_HorizontalMotor != null) {
+//            telemetry.addData("Horizontal Motor Initialized:", "laterator");
+//        } else {
+//            telemetry.addData("Horizontal Motor Missing:", "laterator");
+//        }
+
         // Vertical slide
         Arm_VerticalMotor = hardwareMap.get(DcMotor.class, "armL"); // Vertical slide hardware
         Arm_VerticalMotor.setDirection(DcMotorSimple.Direction.REVERSE); // Adjust direction if needed
         Arm_VerticalMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         resetVerticalEncoder();
+
+//        if (Arm_VerticalMotor != null) {
+//            telemetry.addData("Vertical Motor Initialized:", "verticalSlide");
+//        } else {
+//            telemetry.addData("Vertical Motor Missing:", "verticalSlide");
+//        }
+//
+//        telemetry.update();
     }
 
     // Reset encoder functions
@@ -109,4 +125,6 @@ public class ArmExtension {
     public double getCurrentVerticalLength() {
         return Arm_VerticalMotor.getCurrentPosition() / vertical_distanceRatio;
     }
+
+
 }
