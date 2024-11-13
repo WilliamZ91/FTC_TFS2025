@@ -65,7 +65,7 @@ public class TeleOp2025_v1 extends LinearOpMode {
 
     private int bButton_DelayCnt = 0;
     private ArmExtension armExtension;
-
+    double position = 0;
 
     @Override
     public void runOpMode() throws InterruptedException {
@@ -79,6 +79,9 @@ public class TeleOp2025_v1 extends LinearOpMode {
         leftRear.setDirection(DcMotor.Direction.FORWARD);
         rightRear.setDirection(DcMotor.Direction.REVERSE);
         rightFront.setDirection(DcMotor.Direction.REVERSE);
+
+//        specimen.setDirection(Servo.Direction.REVERSE);
+
 
         // Adjust the orientation parameters to match your robot
         IMU.Parameters parameters = new IMU.Parameters(new RevHubOrientationOnRobot(
@@ -114,13 +117,15 @@ public class TeleOp2025_v1 extends LinearOpMode {
 
         IntakeWrist.setPosition(0.8);
         sleep(1000);
-        OuttakeWrist.setPosition(0.41);
+        OuttakeWrist.setPosition(0.5);
 
         waitForStart();
-
+        position = 0;
 
         if (isStopRequested()) return;
         while (opModeIsActive()) {
+
+
 
             //armSystem.armTeleOp(gamepad2);
             //ArmExtendHardware.(gamepad2.right_stick_y);
@@ -201,6 +206,10 @@ public class TeleOp2025_v1 extends LinearOpMode {
             }
 
 
+
+
+
+
             if (gamepad2.dpad_up) {//outtake
                 ClawL.setPower(1);
                 ClawR.setPower(-1);
@@ -214,10 +223,10 @@ public class TeleOp2025_v1 extends LinearOpMode {
                 ClawR.setPower(0);
             }
             if (gamepad2.a) {
-                OuttakeWrist.setPosition(-1);//outtake
+                OuttakeWrist.setPosition(-0.5);//outtake
             }
             if (gamepad2.b) {//intake
-                OuttakeWrist.setPosition(0.47);
+                OuttakeWrist.setPosition(0.3);
             }
             if (gamepad2.left_bumper) {//outtake
                 IntakeWrist.setPosition(0.15);
@@ -263,6 +272,19 @@ public class TeleOp2025_v1 extends LinearOpMode {
              */
 
 
+            if (gamepad1.a) {
+                position += 0.05;
+            }
+            if (gamepad1.b) {
+                position -= 0.05;
+            }
+            if (gamepad1.x) {
+                OuttakeWrist.setPosition(position);
+            }
+
+            if (Math.abs(position)>1) position = 1;
+            else if (Math.abs(position)<0) position = 0;
+
 
             if (autoThreadFlag) {
                 telemetry.addLine("thread start");
@@ -276,6 +298,7 @@ public class TeleOp2025_v1 extends LinearOpMode {
             telemetry.addData("Red:", colorSensor.red());
             telemetry.addData("Green:", colorSensor.green());
             telemetry.addData("Blue:", colorSensor.blue());
+            telemetry.addData("Position:", position);
 
 
             telemetry.addData("Hue", hsvValues[0]);
