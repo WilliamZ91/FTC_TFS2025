@@ -147,16 +147,16 @@ public class TeleOp2025_v1 extends LinearOpMode {
 
 
             // now the orientation of robot is changed
-            double forwardBackward = gamepad1.left_stick_y * speedFactor; // Controls forward/backward movement
-            double strafe = gamepad1.left_stick_x * speedFactor;          // Controls left/right strafing
-            double rotation = gamepad1.right_stick_x * speedFactor;       // Controls rotation
+            double leftStickXPos = gamepad1.left_stick_x * speedFactor;
+            double leftStickYPos = gamepad1.left_stick_y * speedFactor;
+            double rightStickXPos = gamepad1.right_stick_x * speedFactor;
 
-            double denominator = Math.max(Math.abs(forwardBackward) + Math.abs(strafe) + Math.abs(rotation), 1);
+            double denominator = Math.max(Math.abs(leftStickYPos) + Math.abs(leftStickXPos) + Math.abs(rightStickXPos), 1);
 
-            double lfPower = (forwardBackward + strafe + rotation) / denominator;
-            double lrPower = (forwardBackward - strafe + rotation) / denominator;
-            double rfPower = (forwardBackward - strafe - rotation) / denominator;
-            double rrPower = (forwardBackward + strafe - rotation) / denominator;
+            double lfPower = (leftStickYPos - leftStickXPos - rightStickXPos) / denominator;
+            double lrPower = (leftStickYPos + leftStickXPos - rightStickXPos) / denominator;
+            double rfPower = (leftStickYPos + leftStickXPos + rightStickXPos) / denominator;
+            double rrPower = (leftStickYPos - leftStickXPos + rightStickXPos) / denominator;
 
             // Normalize the values so no wheel power exceeds 100%
             // This ensures that the robot maintains the desired motion.
@@ -228,8 +228,12 @@ public class TeleOp2025_v1 extends LinearOpMode {
             if (gamepad2.dpad_left) {//traverse
                 IntakeWrist.setPosition(0.50);
             }
-
-
+            if (gamepad2.x) {//traverse
+                specimen.setPosition(0.70);
+            }
+            if (gamepad2.y) {//traverse
+                specimen.setPosition(0.30);
+            }
             /*
             SEMI AUTONOMOUS PLANNING
 
