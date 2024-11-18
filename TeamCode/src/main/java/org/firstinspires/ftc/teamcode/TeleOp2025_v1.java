@@ -117,7 +117,7 @@ public class TeleOp2025_v1 extends LinearOpMode {
 
         IntakeWrist.setPosition(0.8);
         sleep(1000);
-        OuttakeWrist.setPosition(0.5);
+       //OuttakeWrist.setPosition(0.5);
 
         waitForStart();
         position = 0;
@@ -223,10 +223,10 @@ public class TeleOp2025_v1 extends LinearOpMode {
                 ClawR.setPower(0);
             }
             if (gamepad2.a) {
-                OuttakeWrist.setPosition(-0.5);//outtake
+                OuttakeWrist.setPosition(0.1);//outtake
             }
             if (gamepad2.b) {//intake
-                OuttakeWrist.setPosition(0.3);
+                OuttakeWrist.setPosition(1);
             }
             if (gamepad2.left_bumper) {//outtake
                 IntakeWrist.setPosition(0.15);
