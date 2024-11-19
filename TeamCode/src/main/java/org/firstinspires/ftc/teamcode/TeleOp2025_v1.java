@@ -145,10 +145,10 @@ public class TeleOp2025_v1 extends LinearOpMode {
             }
 
             // Control horizontal slide (laterator) with right joystick (horizontal)
-            armExtension.controlHorizontalExtend(gamepad2.right_stick_x);
+            armExtension.controlHorizontalExtend(-gamepad2.right_stick_y);
 
             // Control vertical slide with left joystick (vertical)
-            armExtension.controlVerticalExtend(gamepad2.left_stick_y);
+            armExtension.controlVerticalExtend(-gamepad2.left_stick_y);
 
             // Add telemetry to show the length of both slides
 
