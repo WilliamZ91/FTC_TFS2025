@@ -226,7 +226,7 @@ public class TeleOp2025_v1 extends LinearOpMode {
                 OuttakeWrist.setPosition(0.1);//outtake
             }
             if (gamepad2.b) {//intake
-                OuttakeWrist.setPosition(1);
+                OuttakeWrist.setPosition(0.8);
             }
             if (gamepad2.left_bumper) {//outtake
                 IntakeWrist.setPosition(0.15);
