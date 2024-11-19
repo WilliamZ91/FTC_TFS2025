@@ -58,6 +58,7 @@ public class TeleOp2025_v1 extends LinearOpMode {
     boolean climbBool = false;
     IMU imu;
     private DcMotorEx leftFront, leftRear, rightRear, rightFront;
+    private DcMotorEx climb;
     private boolean autoThreadFlag = false;
     private boolean traverseMode = false;
 
@@ -74,6 +75,7 @@ public class TeleOp2025_v1 extends LinearOpMode {
         leftRear = hardwareMap.get(DcMotorEx.class, "lr");
         rightRear = hardwareMap.get(DcMotorEx.class, "rr");
         rightFront = hardwareMap.get(DcMotorEx.class, "rf");
+        climb = hardwareMap.get(DcMotorEx.class, "climbM");
         colorSensor = hardwareMap.get(ColorSensor.class, "colorSensor");
         leftFront.setDirection(DcMotor.Direction.FORWARD);
         leftRear.setDirection(DcMotor.Direction.FORWARD);
@@ -117,7 +119,7 @@ public class TeleOp2025_v1 extends LinearOpMode {
 
         IntakeWrist.setPosition(0.8);
         sleep(1000);
-       //OuttakeWrist.setPosition(0.5);
+       OuttakeWrist.setPosition(0.5);
 
         waitForStart();
         position = 0;
