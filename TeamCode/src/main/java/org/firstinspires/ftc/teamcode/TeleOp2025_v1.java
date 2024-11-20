@@ -40,7 +40,7 @@ public class TeleOp2025_v1 extends LinearOpMode {
 
     Mode currentMode = Mode.DRIVER_CONTROL;
     //double targetAngle = Math.toRadians(90 * TFS_Auton_2024.blueVal);
-     ArmSystem armSystem;
+    ArmSystem armSystem;
     private Servo IntakeWrist = null;
     private Servo OuttakeWrist = null;
 
@@ -117,9 +117,9 @@ public class TeleOp2025_v1 extends LinearOpMode {
 
 
 
-        IntakeWrist.setPosition(0.8);
+        IntakeWrist.setPosition(0.5);
         sleep(1000);
-       OuttakeWrist.setPosition(0.5);
+        OuttakeWrist.setPosition(0.3);
 
         waitForStart();
         position = 0;
@@ -239,10 +239,10 @@ public class TeleOp2025_v1 extends LinearOpMode {
             if (gamepad2.dpad_left) {//traverse
                 IntakeWrist.setPosition(0.50);
             }
-            if (gamepad2.x) {//traverse
+            if (gamepad2.x) {//open
                 specimen.setPosition(0.70);
             }
-            if (gamepad2.y) {//traverse
+            if (gamepad2.y) {//close
                 specimen.setPosition(0.30);
             }
             /*
