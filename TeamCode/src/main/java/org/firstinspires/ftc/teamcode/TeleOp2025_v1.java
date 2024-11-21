@@ -115,10 +115,9 @@ public class TeleOp2025_v1 extends LinearOpMode {
         final double SCALE_FACTOR = 255;
 
 
-
-        IntakeWrist.setPosition(0.5);
-        sleep(1000);
         OuttakeWrist.setPosition(0.3);
+        sleep(1000);
+        IntakeWrist.setPosition(0.5);
 
         waitForStart();
         position = 0;
@@ -140,7 +139,7 @@ public class TeleOp2025_v1 extends LinearOpMode {
             if (gamepad1.right_bumper) {
                 speedFactor = 0.9;
             } else {
-                speedFactor = 0.5;
+                speedFactor = 0.2;
             }
 
             // Control horizontal slide (laterator) with right joystick (horizontal)
@@ -201,13 +200,29 @@ public class TeleOp2025_v1 extends LinearOpMode {
 
 
 
-            if (detectedColor.equals("Red") || detectedColor.equals("Yellow") || detectedColor.equals("Blue")) {
+            if (detectedColor.equals("Red") || detectedColor.equals("Blue")) {
                 ClawL.setPower(0);
                 ClawR.setPower(0);
             }
 
 
-
+            if (gamepad2.dpad_left) {
+                autoThreadFlag = true;
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        OuttakeWrist.setPosition(0.12);//outtake
+                        sleep(1300);
+                        IntakeWrist.setPosition(0.20);
+                        sleep(900);
+                        ClawL.setPower(1);
+                        ClawR.setPower(-1);
+                        sleep(3000);
+                        IntakeWrist.setPosition(0.5);
+                        sleep(1000);
+                    }
+                }).start();
+            }
 
 
 
@@ -224,9 +239,9 @@ public class TeleOp2025_v1 extends LinearOpMode {
                 ClawR.setPower(0);
             }
             if (gamepad2.a) {
-                OuttakeWrist.setPosition(0.12);//outtake
+                OuttakeWrist.setPosition(0.12);//intake
             }
-            if (gamepad2.b) {//intake
+            if (gamepad2.b) {//outtake
                 OuttakeWrist.setPosition(0.95);
             }
             if (gamepad2.left_bumper) {//outtake
@@ -273,15 +288,6 @@ public class TeleOp2025_v1 extends LinearOpMode {
              */
 
 
-            if (gamepad1.a) {
-                position += 0.05;
-            }
-            if (gamepad1.b) {
-                position -= 0.05;
-            }
-            if (gamepad1.x) {
-                OuttakeWrist.setPosition(position);
-            }
 
             if (Math.abs(position)>1) position = 1;
             else if (Math.abs(position)<0) position = 0;

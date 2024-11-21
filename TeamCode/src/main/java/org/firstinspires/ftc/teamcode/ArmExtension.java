@@ -20,6 +20,7 @@ public class ArmExtension {
     private final double vertical_distanceRatio = 4000 / 1.0; // Encoder counts per meter for vertical
     private final double speedVertical = 0.8; // Speed factor for vertical slide
 
+
     // Initialize hardware for both slides
     public void initArmExtensionHardware(HardwareMap hardwareMap) {
         // Horizontal slide (laterator)
@@ -68,10 +69,10 @@ public class ArmExtension {
 
         if (gamepadInput < -0.1 && currentVerticalPosition > minVerticalArm) { // Retract
             Arm_VerticalMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-            Arm_VerticalMotor.setPower(gamepadInput * speedVertical/1.5);
+            Arm_VerticalMotor.setPower(gamepadInput * speedVertical);
         } else if (gamepadInput > 0.1 && currentVerticalPosition < maxVerticalArm) { // Extend
             Arm_VerticalMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-            Arm_VerticalMotor.setPower(gamepadInput * speedVertical);
+            Arm_VerticalMotor.setPower(gamepadInput * speedVertical/5);
         } else {
             Arm_VerticalMotor.setPower(0); // Stop motor if no input or limits reached
         }
@@ -95,7 +96,7 @@ public class ArmExtension {
     }
 
     // Helper function to move the vertical slide to a specific position
-    public void Arm_Vertical_Position(double target, double power) {
+    public void  Arm_Vertical_Position(double target, double power) {
         Arm_VerticalMotor.setTargetPosition((int) (target * vertical_distanceRatio));
         Arm_VerticalMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         Arm_VerticalMotor.setPower(power);
