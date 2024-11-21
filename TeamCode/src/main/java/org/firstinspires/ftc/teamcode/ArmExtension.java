@@ -9,16 +9,16 @@ public class ArmExtension {
     private DcMotor Arm_VerticalMotor;   // Vertical slide
 
     // Limits and speed for horizontal (laterator)
-    private final double maxHorizontalArm = 0.50; // Max horizontal extension length (meters)
-    private final double minHorizontalArm = -0.01; // Min horizontal extension length (meters)
-    private final double horizontal_distanceRatio = 2952 / 0.88; // Encoder counts per meter
-    private final double speedHorizontal = 0.5; // Speed factor for horizontal slide
+    private final double maxHorizontalArm = 1; // Max horizontal extension length (meters)
+    private final double minHorizontalArm = -30; // Min horizontal extension length (meters)
+    private final double horizontal_distanceRatio = 4000 / 1.0; // Encoder counts per meter
+    private final double speedHorizontal = 0.6; // Speed factor for horizontal slide
 
     // Limits and speed for vertical slide
     private final double maxVerticalArm = 1; // Max vertical extension length (meters)
     private final double minVerticalArm = -30; // Min vertical extension length (meters)
     private final double vertical_distanceRatio = 4000 / 1.0; // Encoder counts per meter for vertical
-    private final double speedVertical = 0.5; // Speed factor for vertical slide
+    private final double speedVertical = 0.8; // Speed factor for vertical slide
 
     // Initialize hardware for both slides
     public void initArmExtensionHardware(HardwareMap hardwareMap) {
@@ -68,7 +68,7 @@ public class ArmExtension {
 
         if (gamepadInput < -0.1 && currentVerticalPosition > minVerticalArm) { // Retract
             Arm_VerticalMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-            Arm_VerticalMotor.setPower(gamepadInput * speedVertical);
+            Arm_VerticalMotor.setPower(gamepadInput * speedVertical/1.5);
         } else if (gamepadInput > 0.1 && currentVerticalPosition < maxVerticalArm) { // Extend
             Arm_VerticalMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
             Arm_VerticalMotor.setPower(gamepadInput * speedVertical);

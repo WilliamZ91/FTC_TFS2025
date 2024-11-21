@@ -75,7 +75,6 @@ public class TeleOp2025_v1 extends LinearOpMode {
         leftRear = hardwareMap.get(DcMotorEx.class, "lr");
         rightRear = hardwareMap.get(DcMotorEx.class, "rr");
         rightFront = hardwareMap.get(DcMotorEx.class, "rf");
-        climb = hardwareMap.get(DcMotorEx.class, "climbM");
         colorSensor = hardwareMap.get(ColorSensor.class, "colorSensor");
         leftFront.setDirection(DcMotor.Direction.FORWARD);
         leftRear.setDirection(DcMotor.Direction.FORWARD);
@@ -148,7 +147,7 @@ public class TeleOp2025_v1 extends LinearOpMode {
             armExtension.controlHorizontalExtend(-gamepad2.right_stick_y);
 
             // Control vertical slide with left joystick (vertical)
-            armExtension.controlVerticalExtend(-gamepad2.left_stick_y);
+            armExtension.controlVerticalExtend(gamepad2.left_stick_y);
 
             // Add telemetry to show the length of both slides
 
@@ -225,10 +224,10 @@ public class TeleOp2025_v1 extends LinearOpMode {
                 ClawR.setPower(0);
             }
             if (gamepad2.a) {
-                OuttakeWrist.setPosition(0.1);//outtake
+                OuttakeWrist.setPosition(0.12);//outtake
             }
             if (gamepad2.b) {//intake
-                OuttakeWrist.setPosition(0.8);
+                OuttakeWrist.setPosition(0.95);
             }
             if (gamepad2.left_bumper) {//outtake
                 IntakeWrist.setPosition(0.15);
@@ -240,10 +239,10 @@ public class TeleOp2025_v1 extends LinearOpMode {
                 IntakeWrist.setPosition(0.50);
             }
             if (gamepad2.x) {//open
-                specimen.setPosition(0.70);
+                specimen.setPosition(0.50);
             }
             if (gamepad2.y) {//close
-                specimen.setPosition(0.30);
+                specimen.setPosition(1);
             }
             /*
             SEMI AUTONOMOUS PLANNING
