@@ -56,7 +56,7 @@ public class Auton2025_v1 extends LinearOpMode {
     public boolean isBlue = false;
     public static int blueVal = 1;
 
-    private String curAlliance="Red";
+    private String curAlliance = "Red";
 
     boolean togglePreview = true;
 
@@ -98,61 +98,66 @@ public class Auton2025_v1 extends LinearOpMode {
         // sometimes it helps to multiply the raw RGB values with a scale factor
         // to amplify/attentuate the measured values.
         final double SCALE_FACTOR = 255;
-        while (!opModeIsActive() && !isStopRequested()){
-        if (gamepad1.x){
-            curAlliance = "blue";
-            isBlue = true;
-            blueVal = -1;
-        }else if (gamepad1.b){
-            curAlliance = "red";
-            isBlue = false;
-        }
-        telemetry.addData("Current Alliance Selected : ", curAlliance.toUpperCase());
-        telemetry.addData("Side?: ", isBlue);
-        telemetry.update();
-    }
+        specimen.setPosition(1);
+        OuttakeWrist.setPosition(0.3);
+        while (!opModeIsActive() && !isStopRequested()) {
 
-        waitForStart();
-        if (isStopRequested()) return;
-        while (opModeIsActive()) {
-            if (!isBlue) {
-                leftFront.setPower(1);
-                rightFront.setPower(1);
-                leftRear.setPower(1);
-                rightRear.setPower(1);
-                sleep(500);
-                leftFront.setPower(0);
-                rightFront.setPower(0);
-                leftRear.setPower(0);
-                rightRear.setPower(0);
-                sleep(20);
-                Arm_VerticalMotor.setTargetPosition((int) (-0.47 * 4000));
-                Arm_VerticalMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                Arm_VerticalMotor.setPower(0.8);
-                sleep(100);
-                leftFront.setPower(1);
-                rightFront.setPower(1);
-                leftRear.setPower(1);
-                rightRear.setPower(1);
-                sleep(2000);
-                leftFront.setPower(0);
-                rightFront.setPower(0);
-                leftRear.setPower(0);
-                rightRear.setPower(0);
-                sleep(50);
-                Arm_VerticalMotor.setTargetPosition((int) (-0.20 * 4000));
-                Arm_VerticalMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                Arm_VerticalMotor.setPower(0.8);
-                sleep(700);
-                leftFront.setPower(-1);
-                rightFront.setPower(-1);
-                leftRear.setPower(-1);
-                rightRear.setPower(-1);
+            waitForStart();
+
+
+            if (isStopRequested()) return;
+            if (!armExtension.VerArmFlag) {
+//                leftFront.setPower(.5);
+//                rightFront.setPower(-.5);
+//                leftRear.setPower(-.5);
+//                rightRear.setPower(.5);
+//                sleep(500);
+//                leftFront.setPower(0);
+//                rightFront.setPower(0);
+//                leftRear.setPower(0);
+//                rightRear.setPower(0);
+//                sleep(50);
+                armExtension.Arm_Vertical_Position(-0.41, 1);
                 sleep(1000);
+                leftFront.setPower(-.5);
+                rightFront.setPower(-.5);
+                leftRear.setPower(-.5);
+                rightRear.setPower(-.5);
+                sleep(3000);
                 leftFront.setPower(0);
                 rightFront.setPower(0);
                 leftRear.setPower(0);
                 rightRear.setPower(0);
+                sleep(2000);
+                //
+                armExtension.Arm_Vertical_Position(0, 0.8);
+
+                sleep(500);
+
+                leftFront.setPower(.5);
+                rightFront.setPower(.5);
+                leftRear.setPower(.5);
+                rightRear.setPower(.5);
+                sleep(900);
+                leftFront.setPower(0);
+                rightFront.setPower(0);
+                leftRear.setPower(0);
+                rightRear.setPower(0);
+                sleep(2000);
+                leftFront.setPower(-.5);
+                rightFront.setPower(.5);
+                leftRear.setPower(.5);
+                rightRear.setPower(-.5);
+                sleep(3000);
+                leftFront.setPower(0);
+                rightFront.setPower(0);
+                leftRear.setPower(0);
+                rightRear.setPower(0);
+                sleep(3000);
+                armExtension.VerArmFlag = true;
+            }
+            while (opModeIsActive()) {
+
             }
         }
     }

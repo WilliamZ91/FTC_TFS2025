@@ -19,6 +19,8 @@ public class ArmExtension {
     private final double minVerticalArm = -30; // Min vertical extension length (meters)
     private final double vertical_distanceRatio = 4000 / 1.0; // Encoder counts per meter for vertical
     private final double speedVertical = 0.8; // Speed factor for vertical slide
+    public boolean HorArmFlag;
+    public boolean VerArmFlag;
 
 
     // Initialize hardware for both slides
@@ -58,7 +60,7 @@ public class ArmExtension {
         } else if (gamepadInput > 0.1 && currentHorizontalPosition < maxHorizontalArm) { // Extend
             Arm_HorizontalMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
             Arm_HorizontalMotor.setPower(gamepadInput * speedHorizontal);
-        } else {
+        } else if (!HorArmFlag){
             Arm_HorizontalMotor.setPower(0); // Stop motor if no input or limits reached
         }
     }
@@ -73,7 +75,7 @@ public class ArmExtension {
         } else if (gamepadInput > 0.1 && currentVerticalPosition < maxVerticalArm) { // Extend
             Arm_VerticalMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
             Arm_VerticalMotor.setPower(gamepadInput * speedVertical/5);
-        } else {
+        } else if (!VerArmFlag){
             Arm_VerticalMotor.setPower(0); // Stop motor if no input or limits reached
         }
     }

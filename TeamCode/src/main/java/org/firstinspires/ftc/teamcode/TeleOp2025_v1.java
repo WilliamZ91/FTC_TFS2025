@@ -76,6 +76,8 @@ public class TeleOp2025_v1 extends LinearOpMode {
         rightRear = hardwareMap.get(DcMotorEx.class, "rr");
         rightFront = hardwareMap.get(DcMotorEx.class, "rf");
         colorSensor = hardwareMap.get(ColorSensor.class, "colorSensor");
+        DcMotor Arm_HorizontalMotor = hardwareMap.get(DcMotor.class, "laterator");
+        DcMotor Arm_VerticalMotor = hardwareMap.get(DcMotor.class, "armL");
         leftFront.setDirection(DcMotor.Direction.FORWARD);
         leftRear.setDirection(DcMotor.Direction.FORWARD);
         rightRear.setDirection(DcMotor.Direction.REVERSE);
@@ -139,7 +141,7 @@ public class TeleOp2025_v1 extends LinearOpMode {
             if (gamepad1.right_bumper) {
                 speedFactor = 0.9;
             } else {
-                speedFactor = 0.2;
+                speedFactor = 0.4;
             }
 
             // Control horizontal slide (laterator) with right joystick (horizontal)
@@ -206,11 +208,13 @@ public class TeleOp2025_v1 extends LinearOpMode {
             }
 
 
-            if (gamepad2.dpad_left) {
+            if (!armExtension.HorArmFlag && gamepad2.dpad_left && !autoThreadFlag)  {
                 autoThreadFlag = true;
+                armExtension.HorArmFlag = true;
                 new Thread(new Runnable() {
                     @Override
                     public void run() {
+                        armExtension.Arm_Horizontal_Position(0.170,0.7);
                         OuttakeWrist.setPosition(0.12);//outtake
                         sleep(1300);
                         IntakeWrist.setPosition(0.20);
@@ -220,9 +224,32 @@ public class TeleOp2025_v1 extends LinearOpMode {
                         sleep(3000);
                         IntakeWrist.setPosition(0.5);
                         sleep(1000);
+                        while(opModeIsActive() && Math.abs(armExtension.getCurrentHorizontalLength() - 0.170) > 0.01){
+                            sleep(10);
+                        }
+                        armExtension.HorArmFlag = false;
+                        autoThreadFlag = false;
                     }
                 }).start();
             }
+
+            if (!armExtension.VerArmFlag && gamepad2.dpad_right && !autoThreadFlag)  {
+                autoThreadFlag = true;
+                armExtension.VerArmFlag = true;
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        armExtension.Arm_Vertical_Position(-0.41,0.7);
+                        while(opModeIsActive() && Math.abs(armExtension.getCurrentVerticalLength() - (-0.41)) > 0.01){
+                            sleep(10);
+                        }
+                        armExtension.VerArmFlag = false;
+                        autoThreadFlag = false;
+                    }
+                }).start();
+            }
+
+
 
 
 
@@ -234,10 +261,15 @@ public class TeleOp2025_v1 extends LinearOpMode {
                 ClawL.setPower(-1);
                 ClawR.setPower(1);
             }
-            if (gamepad2.dpad_right) {//stop
+            if (gamepad2.x) {//stop
                 ClawL.setPower(0);
                 ClawR.setPower(0);
             }
+
+            if (gamepad2.y) {//traverse
+                IntakeWrist.setPosition(0.50);
+            }
+
             if (gamepad2.a) {
                 OuttakeWrist.setPosition(0.12);//intake
             }
@@ -250,13 +282,11 @@ public class TeleOp2025_v1 extends LinearOpMode {
             if (gamepad2.right_bumper) {//intake
                 IntakeWrist.setPosition(0.90);
             }
-            if (gamepad2.dpad_left) {//traverse
-                IntakeWrist.setPosition(0.50);
-            }
-            if (gamepad2.x) {//open
+
+            if (gamepad2.left_trigger > 0.01) {//open
                 specimen.setPosition(0.50);
             }
-            if (gamepad2.y) {//close
+            if (gamepad2.right_trigger > 0.01) {//close
                 specimen.setPosition(1);
             }
             /*
