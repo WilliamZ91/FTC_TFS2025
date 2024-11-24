@@ -202,10 +202,6 @@ public class TeleOp2025_v1 extends LinearOpMode {
 
 
 
-            if (detectedColor.equals("Red") || detectedColor.equals("Blue")) {
-                ClawL.setPower(0);
-                ClawR.setPower(0);
-            }
 
 
             if (!armExtension.HorArmFlag && gamepad2.dpad_left && !autoThreadFlag)  {
@@ -221,7 +217,7 @@ public class TeleOp2025_v1 extends LinearOpMode {
                         sleep(900);
                         ClawL.setPower(1);
                         ClawR.setPower(-1);
-                        sleep(3000);
+                        sleep(700);
                         IntakeWrist.setPosition(0.5);
                         sleep(1000);
                         while(opModeIsActive() && Math.abs(armExtension.getCurrentHorizontalLength() - 0.170) > 0.01){

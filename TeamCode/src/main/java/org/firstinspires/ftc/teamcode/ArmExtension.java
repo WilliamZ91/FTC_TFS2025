@@ -102,5 +102,6 @@ public class ArmExtension {
         Arm_VerticalMotor.setTargetPosition((int) (target * vertical_distanceRatio));
         Arm_VerticalMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         Arm_VerticalMotor.setPower(power);
+
     }
 }
