@@ -251,11 +251,11 @@ public class TeleOp2025_v1 extends LinearOpMode {
 
             if (gamepad2.dpad_up) {//outtake
                 ClawL.setPower(1);
-                ClawR.setPower(-1);
+                ClawR.setPower(-0.9);
             }
             if (gamepad2.dpad_down) {//intake
                 ClawL.setPower(-1);
-                ClawR.setPower(1);
+                ClawR.setPower(0.9);
             }
             if (gamepad2.x) {//stop
                 ClawL.setPower(0);
