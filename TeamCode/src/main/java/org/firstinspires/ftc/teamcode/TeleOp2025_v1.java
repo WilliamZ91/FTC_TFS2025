@@ -117,7 +117,7 @@ public class TeleOp2025_v1 extends LinearOpMode {
         final double SCALE_FACTOR = 255;
 
 
-        OuttakeWrist.setPosition(0.3);
+        OuttakeWrist.setPosition(0.5);
         sleep(1000);
         IntakeWrist.setPosition(0.5);
 
