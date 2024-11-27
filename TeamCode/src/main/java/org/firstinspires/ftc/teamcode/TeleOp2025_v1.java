@@ -75,7 +75,7 @@ public class TeleOp2025_v1 extends LinearOpMode {
         leftRear = hardwareMap.get(DcMotorEx.class, "lr");
         rightRear = hardwareMap.get(DcMotorEx.class, "rr");
         rightFront = hardwareMap.get(DcMotorEx.class, "rf");
-        colorSensor = hardwareMap.get(ColorSensor.class, "colorSensor");
+//        colorSensor = hardwareMap.get(ColorSensor.class, "colorSensor");
         DcMotor Arm_HorizontalMotor = hardwareMap.get(DcMotor.class, "laterator");
         DcMotor Arm_VerticalMotor = hardwareMap.get(DcMotor.class, "armL");
         leftFront.setDirection(DcMotor.Direction.FORWARD);
@@ -183,22 +183,22 @@ public class TeleOp2025_v1 extends LinearOpMode {
             leftRear.setPower(lrPower);
             rightRear.setPower(rrPower);
 
-
-            Color.RGBToHSV((int) (colorSensor.red() * SCALE_FACTOR),
-                    (int) (colorSensor.green() * SCALE_FACTOR),
-                    (int) (colorSensor.blue() * SCALE_FACTOR),
-                    hsvValues);
-
-            String detectedColor;
-            if (hsvValues[0] >= 10 && hsvValues[0] <= 30) {
-                detectedColor = "Red";
-            } else if (hsvValues[0] >= 70 && hsvValues[0] <= 90) {
-                detectedColor = "Yellow";
-            } else if (hsvValues[0] >= 200 && hsvValues[0] <= 225) {
-                detectedColor = "Blue";
-            } else {
-                detectedColor = "Unknown";
-            }
+//
+//            Color.RGBToHSV((int) (colorSensor.red() * SCALE_FACTOR),
+//                    (int) (colorSensor.green() * SCALE_FACTOR),
+//                    (int) (colorSensor.blue() * SCALE_FACTOR),
+//                    hsvValues);
+//
+//            String detectedColor;
+//            if (hsvValues[0] >= 10 && hsvValues[0] <= 30) {
+//                detectedColor = "Red";
+//            } else if (hsvValues[0] >= 70 && hsvValues[0] <= 90) {
+//                detectedColor = "Yellow";
+//            } else if (hsvValues[0] >= 200 && hsvValues[0] <= 225) {
+//                detectedColor = "Blue";
+//            } else {
+//                detectedColor = "Unknown";
+//            }
 
 
 
@@ -328,9 +328,9 @@ public class TeleOp2025_v1 extends LinearOpMode {
             //telemetry.addData("Horizontal Slide", ArmExtendHardware.Arm_ExtendMotor.getCurrentPosition());
             telemetry.addData("Horizontal Slide Length (m)", armExtension.getCurrentHorizontalLength());
             telemetry.addData("Vertical Slide Length (m)", armExtension.getCurrentVerticalLength());
-            telemetry.addData("Red:", colorSensor.red());
-            telemetry.addData("Green:", colorSensor.green());
-            telemetry.addData("Blue:", colorSensor.blue());
+//            telemetry.addData("Red:", colorSensor.red());
+//            telemetry.addData("Green:", colorSensor.green());
+//            telemetry.addData("Blue:", colorSensor.blue());
             telemetry.addData("Position:", position);
 
 
@@ -339,7 +339,7 @@ public class TeleOp2025_v1 extends LinearOpMode {
 
 
             // Add the detected color to telemetry
-            telemetry.addData("Color Detected:", detectedColor);
+//            telemetry.addData("Color Detected:", detectedColor);
             // Display the detected color on telemetry
             telemetry.update();
             sleep(33);
