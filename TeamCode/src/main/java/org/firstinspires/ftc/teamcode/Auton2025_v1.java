@@ -109,6 +109,7 @@ public class Auton2025_v1 extends LinearOpMode {
 
             if (isStopRequested()) return;
             if (!armExtension.VerArmFlag) {
+                sleep(6000);
                 leftFront.setPower(-.5);
                 rightFront.setPower(-.5);
                 leftRear.setPower(-.5);
@@ -122,7 +123,7 @@ public class Auton2025_v1 extends LinearOpMode {
                 leftFront.setPower(-.5);
                 rightFront.setPower(.5);
                 leftRear.setPower(.5);
-                rightRear.setPower(-.6);
+                rightRear.setPower(-.5);
                 sleep(1200);
                 leftFront.setPower(0);
                 rightFront.setPower(0);
@@ -169,17 +170,42 @@ public class Auton2025_v1 extends LinearOpMode {
                 rightFront.setPower(0);
                 leftRear.setPower(0);
                 rightRear.setPower(0);
-                sleep(1000);
+                sleep(300);
                 leftFront.setPower(-.5);
-                rightFront.setPower(.5);
-                leftRear.setPower(.5);
+                rightFront.setPower(-.5);
+                leftRear.setPower(-.5);
                 rightRear.setPower(-.5);
+                sleep(90);
+                leftFront.setPower(0);
+                rightFront.setPower(0);
+                leftRear.setPower(0);
+                rightRear.setPower(0);
+                sleep(1000);
+//                leftFront.setPower(-.5);
+//                rightFront.setPower(.5);
+//                leftRear.setPower(.5);
+//                rightRear.setPower(-.5);
+                leftFront.setPower(.5);
+                rightFront.setPower(-.5);
+                leftRear.setPower(-.5);
+                rightRear.setPower(.5);
                 sleep(1565);
                 leftFront.setPower(0);
                 rightFront.setPower(0);
                 leftRear.setPower(0);
                 rightRear.setPower(0);
-                sleep(200);
+                sleep(100);
+                //spin
+                leftFront.setPower(-.5);
+                rightFront.setPower(.5);
+                leftRear.setPower(-.5);
+                rightRear.setPower(.5);
+                sleep(240);
+                leftFront.setPower(0);
+                rightFront.setPower(0);
+                leftRear.setPower(0);
+                rightRear.setPower(0);
+                sleep(100);
 
 
                 armExtension.VerArmFlag = true;
