@@ -212,10 +212,6 @@ public class TeleOp2025_v1 extends LinearOpMode {
                 new Thread(new Runnable() {
                     @Override
                     public void run() {
-                        armExtension.Arm_Vertical_Position(0.05,0.7);
-                        while(opModeIsActive() && Math.abs(armExtension.getCurrentVerticalLength() - (0.05)) > 0.01){
-                            sleep(10);
-                        }
                         IntakeWrist.setPosition(0.50); // Neutral position
                         sleep(50);
                         armExtension.Arm_Horizontal_Position(0.170,0.7);
@@ -228,11 +224,11 @@ public class TeleOp2025_v1 extends LinearOpMode {
                         sleep(700);
                         IntakeWrist.setPosition(0.5);
                         sleep(1000);
+                        armExtension.HorArmFlag = false;
+                        autoThreadFlag = false;
                         while(opModeIsActive() && Math.abs(armExtension.getCurrentHorizontalLength() - 0.170) > 0.01){
                             sleep(10);
                         }
-                        armExtension.HorArmFlag = false;
-                        autoThreadFlag = false;
                         ClawL.setPower(0);
                         ClawR.setPower(0);
                     }
@@ -245,8 +241,8 @@ public class TeleOp2025_v1 extends LinearOpMode {
                 new Thread(new Runnable() {
                     @Override
                     public void run() {
-                        armExtension.Arm_Vertical_Position(0.05,0.7);
-                        while(opModeIsActive() && Math.abs(armExtension.getCurrentVerticalLength() - (0.05)) > 0.01){
+                        armExtension.Arm_Vertical_Position(-0.005,0.7);
+                        while(opModeIsActive() && Math.abs(armExtension.getCurrentVerticalLength() - (-0.005)) > 0.01){
                             sleep(10);
                         }
                         OuttakeWrist.setPosition(0.12);//intake
@@ -304,7 +300,7 @@ public class TeleOp2025_v1 extends LinearOpMode {
 
             // Reset everything on `y`
             if (gamepad2.y) {
-                IntakeWrist.setPosition(0.50); // Neutral position
+                IntakeWrist.setPosition(0.52); // Neutral position
                 OuttakeWrist.setPosition(0.12);//outtake
                 ClawL.setPower(0);
                 ClawR.setPower(0);
