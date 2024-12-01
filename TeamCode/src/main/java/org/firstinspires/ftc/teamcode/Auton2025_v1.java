@@ -99,7 +99,7 @@ public class Auton2025_v1 extends LinearOpMode {
         // to amplify/attentuate the measured values.
         final double SCALE_FACTOR = 255;
         specimen.setPosition(1);
-        OuttakeWrist.setPosition(0.52);
+        OuttakeWrist.setPosition(0.55);
         sleep(500);
         IntakeWrist.setPosition(0.5);
         while (!opModeIsActive() && !isStopRequested()) {

@@ -119,7 +119,7 @@ public class TeleOp2025_v1 extends LinearOpMode {
         final double SCALE_FACTOR = 255;
 
 
-        OuttakeWrist.setPosition(0.5);
+        OuttakeWrist.setPosition(0.55);
         sleep(1000);
         IntakeWrist.setPosition(0.5);
 
@@ -156,8 +156,8 @@ public class TeleOp2025_v1 extends LinearOpMode {
 
 
             // now the orientation of robot is changed
-            double leftStickXPos = gamepad1.left_stick_x * speedFactor;
-            double leftStickYPos = gamepad1.left_stick_y * speedFactor;
+            double leftStickXPos = -gamepad1.left_stick_x * speedFactor;
+            double leftStickYPos = -gamepad1.left_stick_y * speedFactor;
             double rightStickXPos = gamepad1.right_stick_x * speedFactor;
 
             double denominator = Math.max(Math.abs(leftStickYPos) + Math.abs(leftStickXPos) + Math.abs(rightStickXPos), 1);
@@ -206,12 +206,14 @@ public class TeleOp2025_v1 extends LinearOpMode {
 
 
 
-            if (!armExtension.HorArmFlag && gamepad2.right_bumper && !autoThreadFlag)  {
+            if (!armExtension.HorArmFlag && gamepad2.left_bumper && !autoThreadFlag)  {
                 autoThreadFlag = true;
                 armExtension.HorArmFlag = true;
                 new Thread(new Runnable() {
                     @Override
                     public void run() {
+                        ClawL.setPower(0);
+                        ClawR.setPower(0);
                         IntakeWrist.setPosition(0.50); // Neutral position
                         sleep(50);
                         armExtension.Arm_Horizontal_Position(0.170,0.7);
@@ -235,17 +237,19 @@ public class TeleOp2025_v1 extends LinearOpMode {
                 }).start();
             }
 
-            if (!armExtension.VerArmFlag && gamepad2.left_bumper && !autoThreadFlag)  {
+            if (!armExtension.VerArmFlag && gamepad2.right_bumper && !autoThreadFlag)  {
                 autoThreadFlag = true;
                 armExtension.VerArmFlag = true;
                 new Thread(new Runnable() {
                     @Override
-                    public void run() {
+                    public void run(){
+                        OuttakeWrist.setPosition(0.12);//intake
+                        sleep(200);
                         armExtension.Arm_Vertical_Position(-0.005,0.7);
                         while(opModeIsActive() && Math.abs(armExtension.getCurrentVerticalLength() - (-0.005)) > 0.01){
                             sleep(10);
                         }
-                        OuttakeWrist.setPosition(0.12);//intake
+
                         armExtension.VerArmFlag = false;
                         autoThreadFlag = false;
                     }
@@ -268,11 +272,11 @@ public class TeleOp2025_v1 extends LinearOpMode {
                 ClawR.setPower(0.9);
             }
 
-            if (gamepad2.dpad_right) { // Intake
+            if (gamepad2.dpad_left) { // Intake
                 IntakeWrist.setPosition(0.15);
             }
 
-            if (gamepad2.dpad_left) { //outtake
+            if (gamepad2.dpad_right) { //outtake
                 IntakeWrist.setPosition(0.90);
             }
 
@@ -284,11 +288,11 @@ public class TeleOp2025_v1 extends LinearOpMode {
             //----------------------------------------------------------------
 
             // Wrist toggle - a & b
-            if (gamepad2.b) {
+            if (gamepad1.b) {
                 OuttakeWrist.setPosition(0.95); // outtake
             }
 
-            if (gamepad2.a) {
+            if (gamepad1.a) {
                 OuttakeWrist.setPosition(0.12); // intake
             }
 
