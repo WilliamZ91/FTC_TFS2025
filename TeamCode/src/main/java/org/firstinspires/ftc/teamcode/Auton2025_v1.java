@@ -53,14 +53,8 @@ public class Auton2025_v1 extends LinearOpMode {
     private DcMotor Arm_VerticalMotor;   // Vertical slide
 
     public boolean isLeft = false;
-    public boolean isBlue = false;
-    public static int blueVal = 1;
 
-    private String curAlliance = "Red";
 
-    boolean togglePreview = true;
-
-    private int bButton_DelayCnt = 0;
     private ArmExtension armExtension;
     double position = 0;
 
@@ -102,117 +96,214 @@ public class Auton2025_v1 extends LinearOpMode {
         OuttakeWrist.setPosition(0.55);
         sleep(500);
         IntakeWrist.setPosition(0.5);
-        while (!opModeIsActive() && !isStopRequested()) {
 
+
+        while (!opModeIsActive() && !isStopRequested()) {
+            if (gamepad1.x) {
+                isLeft = true; // Toggle the value of isLeft
+            }
+            if (gamepad1.y) {
+                isLeft = false; // Reset when button is released
+            }
+            telemetry.addData("Current Side Selected is Left?: ", isLeft);
+            telemetry.addData("Gamepad X Pressed: ", gamepad1.x);
+            telemetry.addData("Gamepad Y Pressed: ", gamepad1.y);
+
+            telemetry.update();
+
+        }
             waitForStart();
 
 
             if (isStopRequested()) return;
-            if (!armExtension.VerArmFlag) {
-                sleep(6000);
-                leftFront.setPower(-.5);
-                rightFront.setPower(-.5);
-                leftRear.setPower(-.5);
-                rightRear.setPower(-.5);
-                sleep(150);
-                leftFront.setPower(0);
-                rightFront.setPower(0);
-                leftRear.setPower(0);
-                rightRear.setPower(0);
-                sleep(100);
-                leftFront.setPower(-.5);
-                rightFront.setPower(.5);
-                leftRear.setPower(.5);
-                rightRear.setPower(-.5);
-                sleep(1200);
-                leftFront.setPower(0);
-                rightFront.setPower(0);
-                leftRear.setPower(0);
-                rightRear.setPower(0);
-                sleep(50);
-                armExtension.Arm_Vertical_Position(-0.41, 1);
-                sleep(1000);
-                leftFront.setPower(-.5);
-                rightFront.setPower(-.5);
-                leftRear.setPower(-.5);
-                rightRear.setPower(-.5);
-                sleep(600);
-                leftFront.setPower(0);
-                rightFront.setPower(0);
-                leftRear.setPower(0);
-                rightRear.setPower(0);
-                sleep(2000);
+            if (isLeft) {
+                if (!armExtension.VerArmFlag) {
 
-                armExtension.Arm_Vertical_Position(-0.30,1);
-                while(opModeIsActive() && Math.abs(armExtension.getCurrentVerticalLength() - (-0.30)) > 0.01){
-                    sleep(10);
+                    sleep(1000);
+                    leftFront.setPower(.5);
+                    rightFront.setPower(-.5);
+                    leftRear.setPower(-.5);
+                    rightRear.setPower(.5);
+                    sleep(150);
+                    leftFront.setPower(-.5);
+                    rightFront.setPower(-.5);
+                    leftRear.setPower(-.5);
+                    rightRear.setPower(-.5);
+                    sleep(350);
+                    leftFront.setPower(0);
+                    rightFront.setPower(0);
+                    leftRear.setPower(0);
+                    rightRear.setPower(0);
+                    sleep(100);
+
+
+                    leftFront.setPower(.5);
+                    rightFront.setPower(-.5);
+                    leftRear.setPower(.5);
+                    rightRear.setPower(-.5);
+                    sleep(630);
+
+
+                    leftFront.setPower(0);
+                    rightFront.setPower(0);
+                    leftRear.setPower(0);
+                    rightRear.setPower(0);
+                    sleep(50);
+
+
+                    leftFront.setPower(-.5);
+                    rightFront.setPower(-.5);
+                    leftRear.setPower(-.5);
+                    rightRear.setPower(-.5);
+                    sleep(413);
+
+
+                    leftFront.setPower(0);
+                    rightFront.setPower(0);
+                    leftRear.setPower(0);
+                    rightRear.setPower(0);
+                    sleep(500);
+
+
+                    armExtension.Arm_Vertical_Position(-0.55, 0.7);
+                    while (opModeIsActive() && Math.abs(armExtension.getCurrentVerticalLength() - (-0.55)) > 0.01) {
+                        sleep(10);
+                    }
+                    OuttakeWrist.setPosition(0.95); // outtake
+                    sleep(900);
+                    OuttakeWrist.setPosition(0.55);
+                    leftFront.setPower(.5);
+                    rightFront.setPower(.5);
+                    leftRear.setPower(.5);
+                    rightRear.setPower(.5);
+                    sleep(200);
+
+
+                    leftFront.setPower(0);
+                    rightFront.setPower(0);
+                    leftRear.setPower(0);
+                    rightRear.setPower(0);
+                    sleep(500);
+                    armExtension.Arm_Vertical_Position(-0.05, 0.7);
+                    while (opModeIsActive() && Math.abs(armExtension.getCurrentVerticalLength() - (-0.05)) > 0.01) {
+                        sleep(10);
+                    }
+
+
+                    armExtension.VerArmFlag = true;
                 }
-                specimen.setPosition(0.50);
-                sleep(1000);
-                armExtension.Arm_Vertical_Position(0, 1);
-                //test code
-                leftFront.setPower(.5);
-                rightFront.setPower(.5);
-                leftRear.setPower(.5);
-                rightRear.setPower(.5);
-                sleep(200);
-                leftFront.setPower(0);
-                rightFront.setPower(0);
-                leftRear.setPower(0);
-                rightRear.setPower(0);
-                sleep(800);
-                leftFront.setPower(.5);
-                rightFront.setPower(.5);
-                leftRear.setPower(.5);
-                rightRear.setPower(.5);
-                sleep(450);
-                leftFront.setPower(0);
-                rightFront.setPower(0);
-                leftRear.setPower(0);
-                rightRear.setPower(0);
-                sleep(300);
-                leftFront.setPower(-.5);
-                rightFront.setPower(-.5);
-                leftRear.setPower(-.5);
-                rightRear.setPower(-.5);
-                sleep(90);
-                leftFront.setPower(0);
-                rightFront.setPower(0);
-                leftRear.setPower(0);
-                rightRear.setPower(0);
-                sleep(1000);
-//                leftFront.setPower(-.5);
-//                rightFront.setPower(.5);
-//                leftRear.setPower(.5);
-//                rightRear.setPower(-.5);
-                leftFront.setPower(.5);
-                rightFront.setPower(-.5);
-                leftRear.setPower(-.5);
-                rightRear.setPower(.5);
-                sleep(1565);
-                leftFront.setPower(0);
-                rightFront.setPower(0);
-                leftRear.setPower(0);
-                rightRear.setPower(0);
-                sleep(100);
-                //spin
-                leftFront.setPower(-.5);
-                rightFront.setPower(.5);
-                leftRear.setPower(-.5);
-                rightRear.setPower(.5);
-                sleep(240);
-                leftFront.setPower(0);
-                rightFront.setPower(0);
-                leftRear.setPower(0);
-                rightRear.setPower(0);
-                sleep(100);
 
 
-                armExtension.VerArmFlag = true;
+            } else {
+                if (!armExtension.VerArmFlag) {
+                    sleep(6000);
+                    leftFront.setPower(-.5);
+                    rightFront.setPower(-.5);
+                    leftRear.setPower(-.5);
+                    rightRear.setPower(-.5);
+                    sleep(150);
+                    leftFront.setPower(0);
+                    rightFront.setPower(0);
+                    leftRear.setPower(0);
+                    rightRear.setPower(0);
+                    sleep(100);
+                    leftFront.setPower(-.5);
+                    rightFront.setPower(.5);
+                    leftRear.setPower(.5);
+                    rightRear.setPower(-.55);
+                    sleep(1120);
+                    leftFront.setPower(0);
+                    rightFront.setPower(0);
+                    leftRear.setPower(0);
+                    rightRear.setPower(0);
+                    sleep(50);
+                    armExtension.Arm_Vertical_Position(-0.41, 1);
+                    sleep(1000);
+                    leftFront.setPower(-.5);
+                    rightFront.setPower(-.5);
+                    leftRear.setPower(-.5);
+                    rightRear.setPower(-.5);
+                    sleep(600);
+                    leftFront.setPower(0);
+                    rightFront.setPower(0);
+                    leftRear.setPower(0);
+                    rightRear.setPower(0);
+                    sleep(2000);
+
+                    armExtension.Arm_Vertical_Position(-0.30, 1);
+                    while (opModeIsActive() && Math.abs(armExtension.getCurrentVerticalLength() - (-0.30)) > 0.01) {
+                        sleep(10);
+                    }
+                    specimen.setPosition(0.50);
+                    sleep(1000);
+                    armExtension.Arm_Vertical_Position(0, 1);
+                    //test code
+                    leftFront.setPower(.5);
+                    rightFront.setPower(.5);
+                    leftRear.setPower(.5);
+                    rightRear.setPower(.5);
+                    sleep(200);
+                    leftFront.setPower(0);
+                    rightFront.setPower(0);
+                    leftRear.setPower(0);
+                    rightRear.setPower(0);
+                    sleep(800);
+                    leftFront.setPower(.5);
+                    rightFront.setPower(.5);
+                    leftRear.setPower(.5);
+                    rightRear.setPower(.5);
+                    sleep(340);
+                    leftFront.setPower(0);
+                    rightFront.setPower(0);
+                    leftRear.setPower(0);
+                    rightRear.setPower(0);
+                    sleep(300);
+                    leftFront.setPower(-.5);
+                    rightFront.setPower(-.5);
+                    leftRear.setPower(-.5);
+                    rightRear.setPower(-.5);
+                    sleep(90);
+                    leftFront.setPower(0);
+                    rightFront.setPower(0);
+                    leftRear.setPower(0);
+                    rightRear.setPower(0);
+                    sleep(1000);
+                    leftFront.setPower(-.5);
+                    rightFront.setPower(.5);
+                    leftRear.setPower(.5);
+                    rightRear.setPower(-.5);
+//                    leftFront.setPower(.5);
+//                    rightFront.setPower(-.5);
+//                    leftRear.setPower(-.5);
+//                    rightRear.setPower(.5);
+                    sleep(1565);
+                    leftFront.setPower(0);
+                    rightFront.setPower(0);
+                    leftRear.setPower(0);
+                    rightRear.setPower(0);
+                    sleep(100);
+                    //spin
+//                    leftFront.setPower(-.5);
+//                    rightFront.setPower(.5);
+//                    leftRear.setPower(-.5);
+//                    rightRear.setPower(.5);
+//                    sleep(240);
+//                    leftFront.setPower(0);
+//                    rightFront.setPower(0);
+//                    leftRear.setPower(0);
+//                    rightRear.setPower(0);
+//                    sleep(100);
+
+
+                    armExtension.VerArmFlag = true;
+                }
+
+
             }
+
             while (opModeIsActive()) {
 
             }
-        }
+
     }
 }
