@@ -272,11 +272,11 @@ public class TeleOp2025_v1 extends LinearOpMode {
                 ClawR.setPower(0.9);
             }
 
-            if (gamepad2.dpad_left) { // Intake
+            if (gamepad2.dpad_left) { // Outtake
                 IntakeWrist.setPosition(0.15);
             }
 
-            if (gamepad2.dpad_right) { //outtake
+            if (gamepad2.dpad_right) { //Intake
                 IntakeWrist.setPosition(0.90);
             }
 
