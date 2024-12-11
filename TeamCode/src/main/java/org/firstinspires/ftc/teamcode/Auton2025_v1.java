@@ -128,12 +128,13 @@ public class Auton2025_v1 extends LinearOpMode {
                 rightFront.setPower(-.5);
                 leftRear.setPower(-.5);
                 rightRear.setPower(-.5);
-                sleep(420);
+                //420
+                sleep(480);
                 leftFront.setPower(0);
                 rightFront.setPower(0);
                 leftRear.setPower(0);
                 rightRear.setPower(0);
-                sleep(100);
+                sleep(50);
                 leftFront.setPower(.5);
                 rightFront.setPower(-.5);
                 leftRear.setPower(.5);
