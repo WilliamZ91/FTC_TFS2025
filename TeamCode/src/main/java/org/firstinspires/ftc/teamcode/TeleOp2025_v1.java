@@ -77,7 +77,9 @@ public class TeleOp2025_v1 extends LinearOpMode {
         leftRear = hardwareMap.get(DcMotorEx.class, "lr");
         rightRear = hardwareMap.get(DcMotorEx.class, "rr");
         rightFront = hardwareMap.get(DcMotorEx.class, "rf");
-//        colorSensor = hardwareMap.get(ColorSensor.class, "colorSensor");
+        climb = hardwareMap.get(DcMotorEx.class, "climb");
+
+        //        colorSensor = hardwareMap.get(ColorSensor.class, "colorSensor");
         DcMotor Arm_HorizontalMotor = hardwareMap.get(DcMotor.class, "laterator");
         DcMotor Arm_VerticalMotor = hardwareMap.get(DcMotor.class, "armL");
         leftFront.setDirection(DcMotor.Direction.FORWARD);
@@ -284,7 +286,29 @@ public class TeleOp2025_v1 extends LinearOpMode {
                 IntakeWrist.setPosition(0.90);
             }
 
+            if (gamepad1.dpad_up) { // climb up
+                climb.setPower(-1);
+                sleep(9500);
+                climb.setPower(0);
+            }
 
+            if (gamepad1.dpad_right) { // reset from top
+                climb.setPower(1);
+                sleep(9500);
+                climb.setPower(0);
+            }
+
+            if (gamepad1.dpad_left) { // reset from down
+                climb.setPower(1);
+                sleep(8800);
+                climb.setPower(0);
+            }
+
+            if (gamepad1.dpad_down) { // reset
+                climb.setPower(1);
+                sleep(700);
+                climb.setPower(0);
+            }
             //----------------------------------------------------------------
 
 
