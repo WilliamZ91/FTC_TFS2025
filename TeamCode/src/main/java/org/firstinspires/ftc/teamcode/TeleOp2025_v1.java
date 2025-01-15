@@ -121,7 +121,7 @@ public class TeleOp2025_v1 extends LinearOpMode {
         final double SCALE_FACTOR = 255;
 
 
-        OuttakeWrist.setPosition(0.55);
+        OuttakeWrist.setPosition(0.18);
         sleep(1000);
         IntakeWrist.setPosition(0.5);
 
@@ -219,7 +219,7 @@ public class TeleOp2025_v1 extends LinearOpMode {
                         IntakeWrist.setPosition(0.50); // Neutral position
                         sleep(50);
                         armExtension.Arm_Horizontal_Position(0.170,0.9);
-                        OuttakeWrist.setPosition(0.12);//outtake
+                        OuttakeWrist.setPosition(0.02);//intake
                         sleep(1300);
                         IntakeWrist.setPosition(0.20);
                         sleep(900);
@@ -248,10 +248,10 @@ public class TeleOp2025_v1 extends LinearOpMode {
                         ClawL.setPower(-1);
                         ClawR.setPower(0.9);
                         armExtension.Arm_Horizontal_Position(1000,0.7);
-                        OuttakeWrist.setPosition(0.95);//outtake
+                        OuttakeWrist.setPosition(0.7);//outtake
                         sleep(1000);
                         IntakeWrist.setPosition(0.90);//intake
-                        OuttakeWrist.setPosition(0.12);//intake
+                        OuttakeWrist.setPosition(0.02);//intake
                         sleep(100);
                         armExtension.HorArmFlag = false;
                         autoThreadFlag = false;
@@ -298,13 +298,13 @@ public class TeleOp2025_v1 extends LinearOpMode {
                 climb.setPower(0);
             }
 
-            if (gamepad1.dpad_left) { // reset from down
+            if (gamepad1.dpad_left) { // reset from climb
                 climb.setPower(1);
                 sleep(8800);
                 climb.setPower(0);
             }
 
-            if (gamepad1.dpad_down) { // reset
+            if (gamepad1.dpad_down) { // do climb
                 climb.setPower(1);
                 sleep(700);
                 climb.setPower(0);
@@ -321,7 +321,7 @@ public class TeleOp2025_v1 extends LinearOpMode {
                 while (opModeIsActive() && Math.abs(armExtension.getCurrentVerticalLength() - (-0.55)) > 0.01) {
                     sleep(10);
                 }
-                OuttakeWrist.setPosition(0.95); // outtake
+                OuttakeWrist.setPosition(0.7); // outtake
             }
 
 
@@ -330,7 +330,7 @@ public class TeleOp2025_v1 extends LinearOpMode {
             if (gamepad2.a) {
                 armExtension.Arm_Vertical_Position(-0.01, 0.7);
                 armExtension.Arm_Horizontal_Position(0.25, 0.7);
-                OuttakeWrist.setPosition(0.12); // intake
+                OuttakeWrist.setPosition(0.02); // intake
 
                 while(opModeIsActive() && Math.abs(armExtension.getCurrentHorizontalLength() - 0.25) > 0.01){
                     sleep(10);
@@ -350,7 +350,7 @@ public class TeleOp2025_v1 extends LinearOpMode {
             // Reset everything on `y`
             if (gamepad2.y) {
                 IntakeWrist.setPosition(0.52); // Neutral position
-                OuttakeWrist.setPosition(0.12);//outtake
+                OuttakeWrist.setPosition(0.18);//outtake
                 ClawL.setPower(0);
                 ClawR.setPower(0);
             }
@@ -360,7 +360,7 @@ public class TeleOp2025_v1 extends LinearOpMode {
             // TRIGGER FUNCTION
 
             if (gamepad2.left_trigger > 0.01) {//open
-                specimen.setPosition(0.50);
+                specimen.setPosition(0.3);
             }
             if (gamepad2.right_trigger > 0.01) {//close
                 specimen.setPosition(1);
