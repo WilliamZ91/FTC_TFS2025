@@ -93,7 +93,7 @@ public class Auton2025_v1 extends LinearOpMode {
         // to amplify/attentuate the measured values.
         final double SCALE_FACTOR = 255;
         specimen.setPosition(1);
-        OuttakeWrist.setPosition(0.55);
+        OuttakeWrist.setPosition(0.18);
         sleep(500);
         IntakeWrist.setPosition(0.5);
 
@@ -119,62 +119,61 @@ public class Auton2025_v1 extends LinearOpMode {
         if (isLeft) {
             if (!armExtension.VerArmFlag) {
                 sleep(1000);
-                leftFront.setPower(.5);
+                leftFront.setPower(.5);//slide left
                 rightFront.setPower(-.5);
                 leftRear.setPower(-.5);
                 rightRear.setPower(.5);
-                sleep(140);
-                leftFront.setPower(-.5);
+                sleep(130);
+                leftFront.setPower(-.5);//go forward
                 rightFront.setPower(-.5);
                 leftRear.setPower(-.5);
                 rightRear.setPower(-.5);
-                //420
-                sleep(480);
-                leftFront.setPower(0);
+                //480
+                sleep(420);
+                leftFront.setPower(0);//stop
                 rightFront.setPower(0);
                 leftRear.setPower(0);
                 rightRear.setPower(0);
                 sleep(50);
-                leftFront.setPower(.5);
+                leftFront.setPower(.5);//turn left
                 rightFront.setPower(-.5);
                 leftRear.setPower(.5);
                 rightRear.setPower(-.5);
-                sleep(595);
-                leftFront.setPower(0);
+                sleep(560);
+                leftFront.setPower(0);//stop
                 rightFront.setPower(0);
                 leftRear.setPower(0);
                 rightRear.setPower(0);
                 sleep(50);
-                leftFront.setPower(-.5);
+                leftFront.setPower(-.5);//go forward
                 rightFront.setPower(-.5);
                 leftRear.setPower(-.5);
                 rightRear.setPower(-.5);
-                sleep(385);
-                leftFront.setPower(0);
+                sleep(365);
+                leftFront.setPower(0);//stop
                 rightFront.setPower(0);
                 leftRear.setPower(0);
                 rightRear.setPower(0);
                 sleep(500);
-                armExtension.Arm_Vertical_Position(-0.55, 0.7);
+                armExtension.Arm_Vertical_Position(-0.55, 0.7);//extend arm up
                 while (opModeIsActive() && Math.abs(armExtension.getCurrentVerticalLength() - (-0.55)) > 0.01) {
                     sleep(10);
                 }
-                OuttakeWrist.setPosition(0.95); // outtake
+                OuttakeWrist.setPosition(0.7); // outtake
                 sleep(900);
-                OuttakeWrist.setPosition(0.55);
-                leftFront.setPower(.5);
+                OuttakeWrist.setPosition(0.02);//intake
+                leftFront.setPower(.5);//go backward
                 rightFront.setPower(.5);
                 leftRear.setPower(.5);
                 rightRear.setPower(.5);
                 sleep(200);
 
-
                 leftFront.setPower(0);
                 rightFront.setPower(0);
                 leftRear.setPower(0);
                 rightRear.setPower(0);
                 sleep(500);
-                armExtension.Arm_Vertical_Position(-0.01, 0.7);
+                armExtension.Arm_Vertical_Position(-0.01, 0.7);//put arm down
                 while (opModeIsActive() && Math.abs(armExtension.getCurrentVerticalLength() - (-0.01)) > 0.01) {
                     sleep(10);
                 }
@@ -183,17 +182,17 @@ public class Auton2025_v1 extends LinearOpMode {
                 rightFront.setPower(-.5);
                 leftRear.setPower(.5);
                 rightRear.setPower(-.5);
-                sleep(200);
+                sleep(190);
                 leftFront.setPower(0);
                 rightFront.setPower(0);
                 leftRear.setPower(0);
                 rightRear.setPower(0);
-                sleep(20);
+                sleep(150);
                 leftFront.setPower(.5);
                 rightFront.setPower(-.5);
                 leftRear.setPower(-.5);
                 rightRear.setPower(.5);
-                sleep(100);
+                sleep(40);//slide right
                 IntakeWrist.setPosition(0.90);
                 sleep(100);
                 leftFront.setPower(0);
@@ -201,17 +200,16 @@ public class Auton2025_v1 extends LinearOpMode {
                 leftRear.setPower(0);
                 rightRear.setPower(0);
                 sleep(10);
-                leftFront.setPower(.5);
+                leftFront.setPower(.5);//go backwards towards sample 1
                 rightFront.setPower(.5);
                 leftRear.setPower(.5);
                 rightRear.setPower(.5);
                 IntakeWrist.setPosition(0.90);
                 sleep(360);
-                armExtension.Arm_Horizontal_Position(0.170,0.7);
+                armExtension.Arm_Horizontal_Position(0.2,0.7);//extend laterator out
                 while (opModeIsActive() && Math.abs(armExtension.getCurrentHorizontalLength() - 0.170) > 0.01) {
                     sleep(10);
                 }
-                //note:increade laterator slide out distance
                     leftFront.setPower(0);
                     rightFront.setPower(0);
                     leftRear.setPower(0);
@@ -224,19 +222,19 @@ public class Auton2025_v1 extends LinearOpMode {
                     rightFront.setPower(.5);
                     leftRear.setPower(-.5);
                     rightRear.setPower(.5);
-                    sleep(180);
-                    leftFront.setPower(-.5);
-                    rightFront.setPower(-.5);
-                    leftRear.setPower(-.5);
-                    rightRear.setPower(-.5);
-                    sleep(150);
+                    sleep(380);
+//                    leftFront.setPower(-.5);
+//                    rightFront.setPower(-.5);
+//                    leftRear.setPower(-.5);
+//                    rightRear.setPower(-.5);
+//                    sleep(150);
                     armExtension.Arm_Vertical_Position(-0.55, 0.7);
                     while (opModeIsActive() && Math.abs(armExtension.getCurrentVerticalLength() - (-0.55)) > 0.01) {
                         sleep(10);
                     }
-                    OuttakeWrist.setPosition(0.95); // outtake
+                    OuttakeWrist.setPosition(0.7); // outtake
                     sleep(900);
-                    OuttakeWrist.setPosition(0.55);
+                    OuttakeWrist.setPosition(0.02);
                     leftFront.setPower(.5);
                     rightFront.setPower(.5);
                     leftRear.setPower(.5);

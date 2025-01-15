@@ -248,7 +248,6 @@ public class TeleOp2025_v1 extends LinearOpMode {
                         ClawL.setPower(-1);
                         ClawR.setPower(0.9);
                         armExtension.Arm_Horizontal_Position(1000,0.7);
-                        OuttakeWrist.setPosition(0.7);//outtake
                         sleep(1000);
                         IntakeWrist.setPosition(0.90);//intake
                         OuttakeWrist.setPosition(0.02);//intake
@@ -286,28 +285,59 @@ public class TeleOp2025_v1 extends LinearOpMode {
                 IntakeWrist.setPosition(0.90);
             }
 
-            if (gamepad1.dpad_up) { // climb up
-                climb.setPower(-1);
-                sleep(9500);
-                climb.setPower(0);
+
+            if (gamepad1.dpad_up)  {//go up to top
+                autoThreadFlag = true;
+                armExtension.HorArmFlag = true;
+                new Thread(new Runnable() {
+                    @Override
+                    public void run(){
+                        climb.setPower(-1);
+                        sleep(9450);
+                        climb.setPower(0);
+                    }
+                }).start();
             }
 
-            if (gamepad1.dpad_right) { // reset from top
-                climb.setPower(1);
-                sleep(9500);
-                climb.setPower(0);
+            if (gamepad1.dpad_right)  {//reset from top
+                autoThreadFlag = true;
+                armExtension.HorArmFlag = true;
+                new Thread(new Runnable() {
+                    @Override
+                    public void run(){
+                        climb.setPower(1);
+                        sleep(9500);
+                        climb.setPower(0);
+                    }
+                }).start();
             }
 
-            if (gamepad1.dpad_left) { // reset from climb
-                climb.setPower(1);
-                sleep(8800);
-                climb.setPower(0);
+
+            if (gamepad1.dpad_left)  {//reset from climb
+                autoThreadFlag = true;
+                armExtension.HorArmFlag = true;
+                new Thread(new Runnable() {
+                    @Override
+                    public void run(){
+                        climb.setPower(1);
+                        sleep(8800);
+                        climb.setPower(0);
+                    }
+                }).start();
             }
 
-            if (gamepad1.dpad_down) { // do climb
-                climb.setPower(1);
-                sleep(700);
+
+            if (gamepad1.dpad_down)  { //do climb
+                autoThreadFlag = true;
+                armExtension.HorArmFlag = true;
+                new Thread(new Runnable() {
+                    @Override
+                    public void run(){
+                        climb.setPower(1);
+                        sleep(700);
                 climb.setPower(0);
+                        }
+                }).start();
             }
             //----------------------------------------------------------------
 
@@ -350,7 +380,7 @@ public class TeleOp2025_v1 extends LinearOpMode {
             // Reset everything on `y`
             if (gamepad2.y) {
                 IntakeWrist.setPosition(0.52); // Neutral position
-                OuttakeWrist.setPosition(0.18);//outtake
+                OuttakeWrist.setPosition(0.02);//outtake
                 ClawL.setPower(0);
                 ClawR.setPower(0);
             }
