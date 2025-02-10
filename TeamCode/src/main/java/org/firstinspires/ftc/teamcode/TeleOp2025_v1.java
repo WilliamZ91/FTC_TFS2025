@@ -121,7 +121,7 @@ public class TeleOp2025_v1 extends LinearOpMode {
         final double SCALE_FACTOR = 255;
 
 
-        OuttakeWrist.setPosition(0.42);//init
+        OuttakeWrist.setPosition(0.17);//init
         sleep(1000);
         IntakeWrist.setPosition(0.5);
 
@@ -130,7 +130,6 @@ public class TeleOp2025_v1 extends LinearOpMode {
 
         if (isStopRequested()) return;
         while (opModeIsActive()) {
-
 
 
             //armSystem.armTeleOp(gamepad2);
@@ -205,10 +204,7 @@ public class TeleOp2025_v1 extends LinearOpMode {
 //            }
 
 
-
-
-
-            if (!armExtension.HorArmFlag && gamepad2.left_bumper && !autoThreadFlag)  {
+            if (!armExtension.HorArmFlag && gamepad2.left_bumper && !autoThreadFlag) {
                 autoThreadFlag = true;
                 armExtension.HorArmFlag = true;
                 new Thread(new Runnable() {
@@ -218,8 +214,8 @@ public class TeleOp2025_v1 extends LinearOpMode {
                         ClawR.setPower(0);
                         IntakeWrist.setPosition(0.50); // Neutral position
                         sleep(50);
-                        armExtension.Arm_Horizontal_Position(0.170,0.9);
-                        OuttakeWrist.setPosition(-1);//intake
+                        armExtension.Arm_Horizontal_Position(0.170, 0.9);
+                        OuttakeWrist.setPosition(0);//intake
                         sleep(1300);
                         IntakeWrist.setPosition(0.20);
                         sleep(900);
@@ -230,7 +226,7 @@ public class TeleOp2025_v1 extends LinearOpMode {
                         sleep(1000);
                         armExtension.HorArmFlag = false;
                         autoThreadFlag = false;
-                        while(opModeIsActive() && Math.abs(armExtension.getCurrentHorizontalLength() - 0.170) > 0.01){
+                        while (opModeIsActive() && Math.abs(armExtension.getCurrentHorizontalLength() - 0.170) > 0.01) {
                             sleep(10);
                         }
                         ClawL.setPower(0);
@@ -239,28 +235,27 @@ public class TeleOp2025_v1 extends LinearOpMode {
                 }).start();
             }
 
-            if (!armExtension.HorArmFlag && gamepad2.right_bumper && !autoThreadFlag)  {
+            if (!armExtension.HorArmFlag && gamepad2.right_bumper && !autoThreadFlag) {
                 autoThreadFlag = true;
                 armExtension.HorArmFlag = true;
                 new Thread(new Runnable() {
                     @Override
-                    public void run(){
+                    public void run() {
                         ClawL.setPower(-1);
                         ClawR.setPower(0.9);
-                        armExtension.Arm_Horizontal_Position(1000,0.7);
+                        armExtension.Arm_Horizontal_Position(1000, 0.7);
                         sleep(1000);
                         IntakeWrist.setPosition(0.90);//intake
-                        OuttakeWrist.setPosition(-1);//intake
+                        OuttakeWrist.setPosition(0);//intake
                         sleep(100);
                         armExtension.HorArmFlag = false;
                         autoThreadFlag = false;
-                        while(opModeIsActive() && Math.abs(armExtension.getCurrentHorizontalLength() - 1000) > 0.01){
+                        while (opModeIsActive() && Math.abs(armExtension.getCurrentHorizontalLength() - 1000) > 0.01) {
                             sleep(10);
                         }
                     }
                 }).start();
             }
-
 
 
             // DPAD FUNCTION
@@ -286,12 +281,12 @@ public class TeleOp2025_v1 extends LinearOpMode {
             }
 
 
-            if (gamepad1.dpad_up && !autoThreadFlag)  {//go up to top
+            if (gamepad1.dpad_up && !autoThreadFlag) {//go up to top
                 autoThreadFlag = true;
                 armExtension.HorArmFlag = true;
                 new Thread(new Runnable() {
                     @Override
-                    public void run(){
+                    public void run() {
                         climb.setPower(-1);
                         sleep(9450);
                         climb.setPower(0);
@@ -301,12 +296,12 @@ public class TeleOp2025_v1 extends LinearOpMode {
                 }).start();
             }
 
-            if (gamepad1.dpad_right && !autoThreadFlag)  {//reset from top
+            if (gamepad1.dpad_right && !autoThreadFlag) {//reset from top
                 autoThreadFlag = true;
                 armExtension.HorArmFlag = true;
                 new Thread(new Runnable() {
                     @Override
-                    public void run(){
+                    public void run() {
                         climb.setPower(1);
                         sleep(9500);
                         climb.setPower(0);
@@ -317,12 +312,12 @@ public class TeleOp2025_v1 extends LinearOpMode {
             }
 
 
-            if (gamepad1.dpad_left && !autoThreadFlag)  {//reset from climb
+            if (gamepad1.dpad_left && !autoThreadFlag) {//reset from climb
                 autoThreadFlag = true;
                 armExtension.HorArmFlag = true;
                 new Thread(new Runnable() {
                     @Override
-                    public void run(){
+                    public void run() {
                         climb.setPower(1);
                         sleep(8800);
                         climb.setPower(0);
@@ -333,18 +328,18 @@ public class TeleOp2025_v1 extends LinearOpMode {
             }
 
 
-            if (gamepad1.dpad_down && !autoThreadFlag)  { //do climb
+            if (gamepad1.dpad_down && !autoThreadFlag) { //do climb
                 autoThreadFlag = true;
                 armExtension.HorArmFlag = true;
                 new Thread(new Runnable() {
                     @Override
-                    public void run(){
+                    public void run() {
                         climb.setPower(1);
                         sleep(700);
-                climb.setPower(0);
+                        climb.setPower(0);
                         armExtension.HorArmFlag = false;
                         autoThreadFlag = false;
-                        }
+                    }
                 }).start();
             }
             //----------------------------------------------------------------
@@ -354,29 +349,46 @@ public class TeleOp2025_v1 extends LinearOpMode {
             //----------------------------------------------------------------
 
             // Wrist toggle - a & b
-            if (gamepad2.b) {
-                armExtension.Arm_Vertical_Position(-0.55, 0.7);
-                while (opModeIsActive() && Math.abs(armExtension.getCurrentVerticalLength() - (-0.55)) > 0.01) {
-                    sleep(10);
-                }
-                OuttakeWrist.setPosition(1); // outtake
+            if (gamepad2.b && !autoThreadFlag && !armExtension.HorArmFlag) {
+                autoThreadFlag = true;
+                armExtension.HorArmFlag = true;
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        armExtension.Arm_Vertical_Position(-0.55, 0.7);
+                        armExtension.HorArmFlag = false;
+                        autoThreadFlag = false;
+                        while (opModeIsActive() && Math.abs(armExtension.getCurrentVerticalLength() - (-0.55)) > 0.01) {
+                            sleep(10);
+                        }
+                        OuttakeWrist.setPosition(0.5); // outtake
+                    }
+                }).start();
             }
 
 
 
 
-            if (gamepad2.a) {
-                armExtension.Arm_Vertical_Position(-0.01, 0.7);
-                armExtension.Arm_Horizontal_Position(0.25, 0.7);
-                OuttakeWrist.setPosition(-1); // intake
-
-                while(opModeIsActive() && Math.abs(armExtension.getCurrentHorizontalLength() - 0.25) > 0.01){
-                    sleep(10);
-                }
-                sleep(50);
-                while (opModeIsActive() && Math.abs(armExtension.getCurrentVerticalLength() - (-0.01)) > 0.01) {
-                    sleep(10);
-                }
+            if (gamepad2.a && !autoThreadFlag && !armExtension.HorArmFlag) {
+                autoThreadFlag = true;
+                armExtension.HorArmFlag = true;
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        armExtension.Arm_Vertical_Position(-0.01, 0.7);
+                        armExtension.Arm_Horizontal_Position(0.25, 0.7);
+                        OuttakeWrist.setPosition(0); // intake
+                        armExtension.HorArmFlag = false;
+                        autoThreadFlag = false;
+                        while (opModeIsActive() && Math.abs(armExtension.getCurrentHorizontalLength() - 0.25) > 0.01) {
+                            sleep(10);
+                        }
+                        sleep(50);
+                        while (opModeIsActive() && Math.abs(armExtension.getCurrentVerticalLength() - (-0.01)) > 0.01) {
+                            sleep(10);
+                        }
+                    }
+                }).start();
             }
 
             // Claw toggle on `x`
@@ -388,7 +400,7 @@ public class TeleOp2025_v1 extends LinearOpMode {
             // Reset everything on `y`
             if (gamepad2.y) {
                 IntakeWrist.setPosition(0.52); // Neutral position
-                OuttakeWrist.setPosition(1);//outtake
+                OuttakeWrist.setPosition(0);//intake
                 ClawL.setPower(0);
                 ClawR.setPower(0);
             }
@@ -403,8 +415,13 @@ public class TeleOp2025_v1 extends LinearOpMode {
             if (gamepad2.right_trigger > 0.01) {//close
                 specimen.setPosition(1);
             }
-
-
+//bucket only
+            if (gamepad1.a) {
+                OuttakeWrist.setPosition(0.5);//outtake
+            }
+            if (gamepad1.b) {
+                OuttakeWrist.setPosition(0);//intake
+            }
 
             if (autoThreadFlag) {
                 telemetry.addLine("thread start");

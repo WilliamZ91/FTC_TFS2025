@@ -93,7 +93,7 @@ public class Auton2025_v1 extends LinearOpMode {
         // to amplify/attentuate the measured values.
         final double SCALE_FACTOR = 255;
         specimen.setPosition(1);
-        OuttakeWrist.setPosition(0.42);
+        OuttakeWrist.setPosition(0.17);
         sleep(500);
         IntakeWrist.setPosition(0.5);
 
@@ -159,9 +159,9 @@ public class Auton2025_v1 extends LinearOpMode {
                 while (opModeIsActive() && Math.abs(armExtension.getCurrentVerticalLength() - (-0.55)) > 0.01) {
                     sleep(10);
                 }
-                OuttakeWrist.setPosition(1); // outtake
+                OuttakeWrist.setPosition(0.5); // outtake
                 sleep(900);
-                OuttakeWrist.setPosition(-1);//intake
+                OuttakeWrist.setPosition(0);//intake
                 leftFront.setPower(.5);//go backward
                 rightFront.setPower(.5);
                 leftRear.setPower(.5);
@@ -232,9 +232,9 @@ public class Auton2025_v1 extends LinearOpMode {
                     while (opModeIsActive() && Math.abs(armExtension.getCurrentVerticalLength() - (-0.55)) > 0.01) {
                         sleep(10);
                     }
-                    OuttakeWrist.setPosition(1); // outtake
+                    OuttakeWrist.setPosition(0.5); // outtake
                     sleep(900);
-                    OuttakeWrist.setPosition(-1);//intake
+                    OuttakeWrist.setPosition(0);//intake
                     leftFront.setPower(.5);
                     rightFront.setPower(.5);
                     leftRear.setPower(.5);
