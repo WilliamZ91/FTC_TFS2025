@@ -54,14 +54,16 @@ public class TeleOp2025_v1 extends LinearOpMode {
     private double speedfactor = 0.4;
     private double imuAngle = 0.0;
 
-
-    boolean climbBool = false;
     IMU imu;
     private DcMotorEx leftFront, leftRear, rightRear, rightFront;
     private DcMotorEx climb;
     private boolean autoThreadFlag = false;
     private boolean traverseMode = false;
 
+    private final int CLIMB_MAX_POSITION = 9500; // fully extended (all the way down)
+    private final int CLIMB_MIN_POSITION = 0;     // fully retracted (all the way up)
+    // Conversion factor for encoder ticks to distance (e.g., cm)
+    private final double TICKS_PER_CM = 100.0; // adjust this conversion factor as needed
 
 
     private int bButton_DelayCnt = 0;
@@ -110,6 +112,8 @@ public class TeleOp2025_v1 extends LinearOpMode {
 
         armExtension = new ArmExtension();
         armExtension.initArmExtensionHardware(hardwareMap);
+        climb.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        climb.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
         float hsvValues[] = {0F, 0F, 0F};
 
@@ -124,14 +128,11 @@ public class TeleOp2025_v1 extends LinearOpMode {
         OuttakeWrist.setPosition(0.17);//init
         sleep(1000);
         IntakeWrist.setPosition(0.5);
-
         waitForStart();
         position = 0;
 
         if (isStopRequested()) return;
         while (opModeIsActive()) {
-
-
             //armSystem.armTeleOp(gamepad2);
             //ArmExtendHardware.(gamepad2.right_stick_y);
             //Pose2d poseEstimate = drive.getPoseEstimate();
@@ -185,23 +186,6 @@ public class TeleOp2025_v1 extends LinearOpMode {
             rightFront.setPower(rfPower);
             leftRear.setPower(lrPower);
             rightRear.setPower(rrPower);
-
-//
-//            Color.RGBToHSV((int) (colorSensor.red() * SCALE_FACTOR),
-//                    (int) (colorSensor.green() * SCALE_FACTOR),
-//                    (int) (colorSensor.blue() * SCALE_FACTOR),
-//                    hsvValues);
-//
-//            String detectedColor;
-//            if (hsvValues[0] >= 10 && hsvValues[0] <= 30) {
-//                detectedColor = "Red";
-//            } else if (hsvValues[0] >= 70 && hsvValues[0] <= 90) {
-//                detectedColor = "Yellow";
-//            } else if (hsvValues[0] >= 200 && hsvValues[0] <= 225) {
-//                detectedColor = "Blue";
-//            } else {
-//                detectedColor = "Unknown";
-//            }
 
 
             if (!armExtension.HorArmFlag && gamepad2.left_bumper && !autoThreadFlag) {
@@ -257,10 +241,8 @@ public class TeleOp2025_v1 extends LinearOpMode {
                 }).start();
             }
 
-
             // DPAD FUNCTION
             //----------------------------------------------------------------
-
 
             if (gamepad2.dpad_up) { // Outtake
                 ClawL.setPower(1);
@@ -280,116 +262,104 @@ public class TeleOp2025_v1 extends LinearOpMode {
                 IntakeWrist.setPosition(0.90);
             }
 
+            //////////////////////// CLIMB ////////////////////////////////////////
 
-            if (gamepad1.dpad_up && !autoThreadFlag) {//go up to top
+            if (gamepad1.dpad_up && !autoThreadFlag && !armExtension.HorArmFlag) { // go up to top
                 autoThreadFlag = true;
                 armExtension.HorArmFlag = true;
                 new Thread(new Runnable() {
                     @Override
                     public void run() {
                         climb.setPower(-1);
-                        sleep(9450);
-                        climb.setPower(0);
+                        long startTime = System.currentTimeMillis();
+                        long duration = 9450; // time in ms for full upward motion
                         armExtension.HorArmFlag = false;
                         autoThreadFlag = false;
+                        while (System.currentTimeMillis() - startTime < duration) {
+                            telemetry.addData("Distance", climb.getCurrentPosition());
+                            telemetry.update();
+                            sleep(50);
+                        }
+                        climb.setPower(0);
                     }
                 }).start();
             }
 
-            if (gamepad1.dpad_right && !autoThreadFlag) {//reset from top
+            if (gamepad1.dpad_down && !autoThreadFlag && !armExtension.HorArmFlag) { // down slightly
                 autoThreadFlag = true;
                 armExtension.HorArmFlag = true;
                 new Thread(new Runnable() {
                     @Override
                     public void run() {
                         climb.setPower(1);
-                        sleep(9500);
-                        climb.setPower(0);
+                        long startTime = System.currentTimeMillis();
+                        long duration = 700; // time in ms for slight downward motion
                         armExtension.HorArmFlag = false;
                         autoThreadFlag = false;
+                        while (System.currentTimeMillis() - startTime < duration) {
+                            telemetry.addData("Distance", climb.getCurrentPosition());
+                            telemetry.update();
+                            sleep(50);
+                        }
+                        climb.setPower(0);
                     }
                 }).start();
             }
 
-
-            if (gamepad1.dpad_left && !autoThreadFlag) {//reset from climb
+            if (gamepad1.dpad_right && !autoThreadFlag && !armExtension.HorArmFlag) { // go all the way down
                 autoThreadFlag = true;
                 armExtension.HorArmFlag = true;
                 new Thread(new Runnable() {
                     @Override
                     public void run() {
                         climb.setPower(1);
-                        sleep(8800);
-                        climb.setPower(0);
+                        long startTime = System.currentTimeMillis();
+                        long duration = 9500; // time in ms for full downward motion
                         armExtension.HorArmFlag = false;
                         autoThreadFlag = false;
+                        while (System.currentTimeMillis() - startTime < duration) {
+                            telemetry.addData("Distance", climb.getCurrentPosition());
+                            telemetry.update();
+                            sleep(50);
+                        }
+                        climb.setPower(0);
                     }
                 }).start();
             }
-
-
-            if (gamepad1.dpad_down && !autoThreadFlag) { //do climb
-                autoThreadFlag = true;
-                armExtension.HorArmFlag = true;
-                new Thread(new Runnable() {
-                    @Override
-                    public void run() {
-                        climb.setPower(1);
-                        sleep(700);
-                        climb.setPower(0);
-                        armExtension.HorArmFlag = false;
-                        autoThreadFlag = false;
-                    }
-                }).start();
-            }
-            //----------------------------------------------------------------
-
 
             // BUTTON FUNCTION
             //----------------------------------------------------------------
 
-            // Wrist toggle - a & b
-            if (gamepad2.b && !autoThreadFlag && !armExtension.HorArmFlag) {
-                autoThreadFlag = true;
-                armExtension.HorArmFlag = true;
-                new Thread(new Runnable() {
-                    @Override
-                    public void run() {
-                        armExtension.Arm_Vertical_Position(-0.55, 0.7);
-                        armExtension.HorArmFlag = false;
-                        autoThreadFlag = false;
-                        while (opModeIsActive() && Math.abs(armExtension.getCurrentVerticalLength() - (-0.55)) > 0.01) {
-                            sleep(10);
-                        }
-                        OuttakeWrist.setPosition(0.5); // outtake
-                    }
-                }).start();
-            }
+//                if (gamepad2.b && !autoThreadFlag && !armExtension.HorArmFlag) {
+//                    autoThreadFlag = true;
+//                    armExtension.HorArmFlag = true;
+//                    new Thread(new Runnable() {
+//                        @Override
+//                        public void run() {
+//                            armExtension.Arm_Vertical_Position(-0.55, 0.7);
+//                            armExtension.HorArmFlag = false;
+//                            autoThreadFlag = false;
+//                            while (opModeIsActive() && Math.abs(armExtension.getCurrentVerticalLength() - (-0.55)) > 0.01) {
+//                                sleep(10);
+//                            }
+//                            OuttakeWrist.setPosition(0.5); // outtake
+//                        }
+//                    }).start();
+//                }
 
 
-
-
-            if (gamepad2.a && !autoThreadFlag && !armExtension.HorArmFlag) {
-                autoThreadFlag = true;
-                armExtension.HorArmFlag = true;
-                new Thread(new Runnable() {
-                    @Override
-                    public void run() {
-                        armExtension.Arm_Vertical_Position(-0.01, 0.7);
-                        armExtension.Arm_Horizontal_Position(0.25, 0.7);
-                        OuttakeWrist.setPosition(0); // intake
-                        armExtension.HorArmFlag = false;
-                        autoThreadFlag = false;
-                        while (opModeIsActive() && Math.abs(armExtension.getCurrentHorizontalLength() - 0.25) > 0.01) {
-                            sleep(10);
-                        }
-                        sleep(50);
-                        while (opModeIsActive() && Math.abs(armExtension.getCurrentVerticalLength() - (-0.01)) > 0.01) {
-                            sleep(10);
-                        }
-                    }
-                }).start();
-            }
+//            if (gamepad2.a && !autoThreadFlag && !armExtension.HorArmFlag) {
+//                autoThreadFlag = true;
+//                armExtension.HorArmFlag = true;
+//                new Thread(new Runnable() {
+//                    @Override
+//                    public void run() {
+//                        ClawL.setPower(-1);
+//                        ClawR.setPower(0.9);
+//                        IntakeWrist.setPosition(0.90);
+//                    }
+//                }).start();
+//            }
 
             // Claw toggle on `x`
             if (gamepad2.x) {
@@ -423,6 +393,13 @@ public class TeleOp2025_v1 extends LinearOpMode {
                 OuttakeWrist.setPosition(0);//intake
             }
 
+            if (gamepad2.a) {
+                OuttakeWrist.setPosition(0.5);//outtake
+            }
+            if (gamepad2.b) {
+                OuttakeWrist.setPosition(0);//intake
+            }
+
             if (autoThreadFlag) {
                 telemetry.addLine("thread start");
 
@@ -437,7 +414,6 @@ public class TeleOp2025_v1 extends LinearOpMode {
             telemetry.addData("Position:", position);
 
             telemetry.addData("Hue", hsvValues[0]);
-
 
 
             // Add the detected color to telemetry
