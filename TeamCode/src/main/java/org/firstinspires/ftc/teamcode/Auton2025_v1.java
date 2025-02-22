@@ -26,7 +26,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.YawPitchRollAngles;
 import org.opencv.core.Mat;
 
 import java.util.List;
-@Autonomous(name="TFS_Auton_2025", group="Auto")
+@Autonomous(name="TFS_Auton_2025_Current", group="Auto")
 
 public class Auton2025_v1 extends LinearOpMode {
     ArmSystem armSystem;

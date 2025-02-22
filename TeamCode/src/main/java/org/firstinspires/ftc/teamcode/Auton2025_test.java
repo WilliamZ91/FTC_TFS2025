@@ -10,7 +10,7 @@ import com.qualcomm.robotcore.hardware.IMU;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
-@Autonomous(name = "TFS_Auton_2025_Updated", group = "Auto1")
+@Autonomous(name = "TFS_Auton_2025_Broken", group = "Auto1")
 public class Auton2025_test extends LinearOpMode {
 
     // Drive motors and IMU
