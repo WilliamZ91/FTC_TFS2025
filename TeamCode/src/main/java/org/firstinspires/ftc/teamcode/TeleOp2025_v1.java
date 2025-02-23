@@ -219,26 +219,8 @@ public class TeleOp2025_v1 extends LinearOpMode {
                 }).start();
             }
 
-            if (!armExtension.HorArmFlag && gamepad2.right_bumper && !autoThreadFlag) {
-                autoThreadFlag = true;
-                armExtension.HorArmFlag = true;
-                new Thread(new Runnable() {
-                    @Override
-                    public void run() {
-                        ClawL.setPower(-1);
-                        ClawR.setPower(0.9);
-                        armExtension.Arm_Horizontal_Position(1000, 0.7);
-                        sleep(1000);
-                        IntakeWrist.setPosition(0.90);//intake
-                        OuttakeWrist.setPosition(0);//intake
-                        sleep(100);
-                        armExtension.HorArmFlag = false;
-                        autoThreadFlag = false;
-                        while (opModeIsActive() && Math.abs(armExtension.getCurrentHorizontalLength() - 1000) > 0.01) {
-                            sleep(10);
-                        }
-                    }
-                }).start();
+            if (gamepad2.right_bumper) {
+                OuttakeWrist.setPosition(0.17);//init
             }
 
             // DPAD FUNCTION

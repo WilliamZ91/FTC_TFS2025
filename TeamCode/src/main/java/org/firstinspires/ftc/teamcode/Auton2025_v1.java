@@ -258,11 +258,11 @@ public class Auton2025_v1 extends LinearOpMode {
                     leftRear.setPower(0);
                     rightRear.setPower(0);
                     sleep(100);
-                    leftFront.setPower(-.5);
-                    rightFront.setPower(.5);
-                    leftRear.setPower(.5);
-                    rightRear.setPower(-.55);
-                    sleep(1120);
+//                    leftFront.setPower(-.5);
+//                    rightFront.setPower(.5);
+//                    leftRear.setPower(.5);
+//                    rightRear.setPower(-.55);
+//                    sleep(1120);
                     leftFront.setPower(0);
                     rightFront.setPower(0);
                     leftRear.setPower(0);
@@ -303,7 +303,7 @@ public class Auton2025_v1 extends LinearOpMode {
                     rightFront.setPower(.5);
                     leftRear.setPower(.5);
                     rightRear.setPower(.5);
-                    sleep(340);
+                    sleep(540); //340
                     leftFront.setPower(0);
                     rightFront.setPower(0);
                     leftRear.setPower(0);
@@ -327,7 +327,7 @@ public class Auton2025_v1 extends LinearOpMode {
 //                    rightFront.setPower(-.5);
 //                    leftRear.setPower(-.5);
 //                    rightRear.setPower(.5);
-                    sleep(1565);
+                    sleep(1665); //1565
                     leftFront.setPower(0);
                     rightFront.setPower(0);
                     leftRear.setPower(0);
