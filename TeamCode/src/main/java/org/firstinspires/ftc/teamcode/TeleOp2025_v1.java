@@ -362,7 +362,7 @@ public class TeleOp2025_v1 extends LinearOpMode {
             // TRIGGER FUNCTION
 
             if (gamepad2.left_trigger > 0.01) {//open
-                specimen.setPosition(0.3);
+                specimen.setPosition(0.5);//0.3
             }
             if (gamepad2.right_trigger > 0.01) {//close
                 specimen.setPosition(1);
